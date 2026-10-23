@@ -1,12 +1,12 @@
 # Postage Calculator for Postcrossing
 
-[![GitHub Pages](https://img.shields.io/badge/Live_Demo-GitHub_Pages-C62828?style=flat-square&logo=github)](https://cqhhy2001.github.io/Postage-Calculator-for-Postcrossing/)
+[![GitHub Pages](https://img.shields.io/badge/Live_Demo-GitHub_Pages-C62828?style=flat-square&logo=github)](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
 [![Material Design 1](https://img.shields.io/badge/Design-Material_Design_1.0-1976D2?style=flat-square&logo=materialdesign)](https://m1.material.io/)
-[![PWA Ready](https://img.shields.io/badge/PWA-Offline_Ready-00693E?style=flat-square)](https://cqhhy2001.github.io/Postage-Calculator-for-Postcrossing/)
+[![PWA Ready](https://img.shields.io/badge/PWA-Offline_Ready-00693E?style=flat-square)](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
 
 A fast, offline-capable web application for calculating postcard postage rates across multiple destinations simultaneously. Built specifically for **Postcrossing** enthusiasts sending postcards via **Hongkong Post** (`HK$`) or **China Post** (`RMB ¥`), crafted in strict adherence to the **Google Material Design 1.0 (2014)** specification.
 
-🔗 **Live Demo:** [https://cqhhy2001.github.io/Postage-Calculator-for-Postcrossing/](https://cqhhy2001.github.io/Postage-Calculator-for-Postcrossing/)
+🔗 **Live Demo:** [https://qamoe.cyou/Postage-Calculator-for-Postcrossing/](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
 
 ---
 
