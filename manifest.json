@@ -1,0 +1,25 @@
+{
+  "name": "明信片郵資計算器 · 香港郵政 & 中國郵政",
+  "short_name": "郵資計算器",
+  "description": "Postcrossing 多目的地平郵、空郵、掛號資費速算與湊票助手（支援香港郵政 HK$ 及中國郵政 RMB¥）",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EEEEEE",
+  "theme_color": "#C62828",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='24' fill='%23C62828'/%3E%3Cpath d='M52 56h88a12 12 0 0 1 12 12v56a12 12 0 0 1-12 12H52a12 12 0 0 1-12-12V68a12 12 0 0 1 12-12zm0 14v8l44 26 44-26v-8l-44 26-44-26z' fill='%23FFFFFF'/%3E%3Crect x='76' y='32' width='40' height='12' rx='4' fill='%23FFB300'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='64' fill='%23C62828'/%3E%3Cpath d='M128 152h256a32 32 0 0 1 32 32v144a32 32 0 0 1-32 32H128a32 32 0 0 1-32-32V184a32 32 0 0 1 32-32zm0 36v22l128 72 128-72v-22l-128 72-128-72z' fill='%23FFFFFF'/%3E%3Crect x='200' y='92' width='112' height='28' rx='10' fill='%23FFB300'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

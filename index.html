@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-HK" data-theme="royal_crimson">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#C62828" id="metaThemeColor">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" id="dynamicFavicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23C62828'/%3E%3Cpath d='M14 18h36a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V22a4 4 0 0 1 4-4zm0 5v3l18 11 18-11v-3L32 34 14 23z' fill='%23FFFFFF'/%3E%3Crect x='24' y='10' width='16' height='4' rx='2' fill='%23FFB300'/%3E%3C/svg%3E">
+  <title>香港郵政 · 明信片郵資計算器 | Hongkong Post Postcard Calculator</title>
+  <!-- Google Fonts: Roboto (EN), Noto Sans HK & TC (zh-HK), Noto Sans SC (zh-CN), Noto Color Emoji, and Material Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans+HK:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- MD1 Top System Status Bar Strip (Primary 700) -->
+  <div class="md-status-bar"></div>
+
+  <!-- MD1 App Bar (Primary 500, 4dp Elevation) -->
+  <header class="md-app-bar">
+    <div class="md-app-bar-row">
+      <div class="md-app-bar-title-group">
+        <div class="md-app-bar-icon" aria-hidden="true">
+          <span class="material-icons">markunread_mailbox</span>
+        </div>
+        <div class="md-app-bar-titles">
+          <h1 class="md-app-bar-title" data-i18n="appTitle">香港郵政 · 明信片郵資計算器</h1>
+          <p class="md-app-bar-subtitle" data-i18n="appSubtitle">Postcrossing 多目的地平郵 · 空郵 · 掛號資費速算</p>
+        </div>
+      </div>
+
+      <div class="md-app-bar-actions">
+        <!-- Master Switch: Origin Postal Service (Hongkong Post HK$ vs China Post RMB¥) -->
+        <div class="md-operator-switch" role="group" aria-label="Postal Operator Master Switch" id="operatorMasterSwitch">
+          <button type="button" class="md-operator-btn md-ripple-surface is-active" data-operator="hkpost" id="btnOperatorHK">
+            <span class="flag-emoji">🇭🇰</span>
+            <span class="op-text" data-i18n="operatorHK">香港郵政</span>
+          </button>
+          <button type="button" class="md-operator-btn md-ripple-surface" data-operator="chinapost" id="btnOperatorCN">
+            <span class="flag-emoji">🇨🇳</span>
+            <span class="op-text" data-i18n="operatorCN">中國郵政</span>
+          </button>
+        </div>
+
+        <!-- Appearance & Theme Switcher Button -->
+        <button type="button" class="md-toolbar-btn md-ripple-surface" id="btnOpenThemeDialog" aria-label="Theme">
+          <span class="material-icons">palette</span>
+          <span class="btn-text" id="currentThemeLabel">皇冠丹朱</span>
+        </button>
+
+        <!-- Language Switcher Button -->
+        <button type="button" class="md-toolbar-btn md-ripple-surface" id="btnOpenLangDialog" aria-label="Language">
+          <span class="material-icons">language</span>
+          <span class="btn-text" id="currentLangLabel">繁體（香港）</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace Container -->
+  <main class="md-main-container">
+
+    <!-- 1. Grand Total & Simultaneous Multi-Service Breakdown Card -->
+    <section class="md-card md-summary-card md-choreo-item" style="--choreo-index: 0;" aria-label="Grand Total Postage">
+      <div class="md-summary-top">
+        <div class="md-grand-total-box">
+          <div class="md-grand-total-label">
+            <span class="material-icons" style="font-size:16px;">payments</span>
+            <span data-i18n="grandTotalLabel">當前明信片總郵資</span>
+          </div>
+          <div class="md-grand-total-value" id="grandTotalValueWrap">
+            <span class="md-grand-total-currency" id="grandTotalCurrency">HK$</span>
+            <span id="grandTotalAmount">0.0</span>
+          </div>
+          <div class="md-grand-total-meta">
+            <span class="md-meta-pill">
+              <span class="material-icons">public</span>
+              <span id="totalDestinationsCount">0</span>
+              <span data-i18n="totalDestinationsUnit">個目的地</span>
+            </span>
+            <span class="md-meta-pill">
+              <span class="material-icons">mail</span>
+              <span id="totalCardsCount">0</span>
+              <span data-i18n="totalCardsUnit">張明信片</span>
+            </span>
+            <span class="md-meta-pill">
+              <span class="material-icons">verified_user</span>
+              <span id="totalRegCount">0</span>
+              <span data-i18n="totalRegisteredUnit">件掛號</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="md-breakdown-grid">
+          <!-- Air Mail Subtotal -->
+          <div class="md-breakdown-item">
+            <div class="md-breakdown-header">
+              <span data-i18n="breakdownAir">空郵小計</span>
+              <span class="material-icons">flight_takeoff</span>
+            </div>
+            <div class="md-breakdown-amount" id="airSubtotalAmount">HK$ 0.0</div>
+            <div class="md-breakdown-count" id="airSubtotalCount">0 張</div>
+          </div>
+
+          <!-- Surface Mail Subtotal -->
+          <div class="md-breakdown-item">
+            <div class="md-breakdown-header">
+              <span data-i18n="breakdownSurface">平郵小計</span>
+              <span class="material-icons">directions_boat</span>
+            </div>
+            <div class="md-breakdown-amount" id="surfaceSubtotalAmount">HK$ 0.0</div>
+            <div class="md-breakdown-count" id="surfaceSubtotalCount">0 張</div>
+          </div>
+
+          <!-- Registration Subtotal -->
+          <div class="md-breakdown-item">
+            <div class="md-breakdown-header">
+              <span data-i18n="breakdownReg">掛號附加費</span>
+              <span class="material-icons">assignment_turned_in</span>
+            </div>
+            <div class="md-breakdown-amount" id="regSubtotalAmount">HK$ 0.0</div>
+            <div class="md-breakdown-count" id="regSubtotalCount">0 件 (HK$ 15.5/件)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simultaneous Batch Comparison Bar -->
+      <div class="md-compare-bar">
+        <div class="md-compare-title">
+          <span class="material-icons">compare_arrows</span>
+          <span data-i18n="compareTitle">整批寄遞方案對比：</span>
+        </div>
+        <div class="md-compare-items">
+          <span class="md-compare-badge">
+            <span data-i18n="compareAllAir">若全部空郵</span>:
+            <strong id="compareAllAirValue">HK$ 0.0</strong>
+          </span>
+          <span class="md-compare-badge">
+            <span data-i18n="compareAllSurface">若全部平郵</span>:
+            <strong id="compareAllSurfaceValue">HK$ 0.0</strong>
+          </span>
+          <span class="md-compare-badge">
+            <span data-i18n="compareAllAirReg">若全部空郵+掛號</span>:
+            <strong id="compareAllAirRegValue">HK$ 0.0</strong>
+          </span>
+          <span class="md-compare-badge">
+            <span data-i18n="compareAllSurfaceReg">若全部平郵+掛號</span>:
+            <strong id="compareAllSurfaceRegValue">HK$ 0.0</strong>
+          </span>
+        </div>
+      </div>
+
+      <!-- Cross-Operator Rate Comparison Bar (HK Post vs China Post) -->
+      <div class="md-cross-compare-bar" id="crossOperatorCompareBar" style="display:none;"></div>
+
+      <!-- Contextual Postal Tips Strip (Par Avion / CN Country Name Note / Reg R-Barcode) -->
+      <div class="md-postal-tips-strip" id="postalTipsStrip" style="display:none;"></div>
+    </section>
+
+    <!-- 2. Country Input, ISO Code Search & Postcrossing Quick-Add Card -->
+    <section class="md-card md-controls-card md-choreo-item" style="--choreo-index: 1;" aria-label="Add Destinations">
+      <div class="md-controls-top-row">
+        <!-- MD1 Floating Label Search Input + Helper Text -->
+        <div class="md-textfield-wrapper">
+          <div class="md-textfield" id="searchTextField">
+            <div class="md-textfield-input-row">
+              <span class="material-icons md-textfield-icon">search</span>
+              <input
+                type="text"
+                id="countrySearchInput"
+                class="md-input"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Add Destination or ISO Code"
+              >
+              <button type="button" class="md-icon-btn" id="btnClearSearch" style="display:none;" aria-label="Clear search">
+                <span class="material-icons" style="font-size:18px;">close</span>
+              </button>
+            </div>
+            <label for="countrySearchInput" class="md-floating-label" data-i18n="searchLabel">
+              新增寄送國家 / 地區或二字代碼
+            </label>
+            <div class="md-underline"></div>
+            <div class="md-underline-ripple"></div>
+          </div>
+          <div class="md-helper-text" data-i18n="searchHint">
+            支援中英文及 ISO 代碼（如 德國、台灣、DE、JP），亦支援空格批量輸入如 "DE US JP" 或 "DE*2"
+          </div>
+
+          <!-- MD1 Autocomplete Menu (8dp) -->
+          <div class="md-autocomplete-menu" id="autocompleteMenu" role="listbox"></div>
+        </div>
+
+        <!-- Default Mode & Weight Tier Selectors -->
+        <div class="md-options-group">
+          <div class="md-segmented-field">
+            <span class="md-field-caption" data-i18n="defaultModeLabel">預設寄遞方式：</span>
+            <div class="md-segmented-control" role="group">
+              <button type="button" class="md-segment-btn md-ripple-surface is-active" data-default-mode="air" id="btnDefaultAir">
+                <span class="material-icons" style="font-size:16px;">flight</span>
+                <span data-i18n="modeAir">空郵 (Air)</span>
+              </button>
+              <button type="button" class="md-segment-btn md-ripple-surface" data-default-mode="surface" id="btnDefaultSurface">
+                <span class="material-icons" style="font-size:16px;">directions_boat</span>
+                <span data-i18n="modeSurface">平郵 (Surface)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="md-segmented-field" id="weightTierField">
+            <span class="md-field-caption" data-i18n="weightStepLabel">重量級別：</span>
+            <div class="md-segmented-control" role="group">
+              <button type="button" class="md-segment-btn md-ripple-surface is-active" data-weight-tier="20g" id="btnWeight20g">
+                <span data-i18n="weight20g">標準明信片 (≤ 20g)</span>
+              </button>
+              <button type="button" class="md-segment-btn md-ripple-surface" data-weight-tier="30g" id="btnWeight30g">
+                <span data-i18n="weight30g">超重小型信件 (21–30g)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="md-segmented-field" id="cnSurfaceModeField" style="display:none;">
+            <span class="md-field-caption" data-i18n="cnSurfaceModeLabel">平郵運輸方式：</span>
+            <div class="md-segmented-control" role="group">
+              <button type="button" class="md-segment-btn md-ripple-surface is-active" data-cn-surface="surface" id="btnCnSurface">
+                <span data-i18n="cnModeSurface">水陸路平郵 (¥3.5)</span>
+              </button>
+              <button type="button" class="md-segment-btn md-ripple-surface" data-cn-surface="sal" id="btnCnSAL">
+                <span data-i18n="cnModeSAL">空運水陸路 SAL (¥4.5)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Popular Postcrossing Countries Chips -->
+      <div class="md-chips-section">
+        <div class="md-chips-header-row">
+          <span class="md-field-caption" data-i18n="popularLabel">常用寄達地：</span>
+          <button type="button" class="md-chips-toggle-btn md-ripple-surface" id="btnToggleMobileChips">
+            <span id="mobileChipsToggleText" data-i18n="expandChips">展開全部</span>
+            <span class="material-icons" id="mobileChipsToggleIcon">expand_more</span>
+          </button>
+        </div>
+        <div class="md-chips-list is-mobile-collapsed" id="popularChipsContainer"></div>
+      </div>
+    </section>
+
+    <!-- 3. Multi-Destination Calculation Table / Mobile Compact Cards -->
+    <section class="md-card md-table-card md-choreo-item" style="--choreo-index: 2;" aria-label="Destination List">
+      <div class="md-table-toolbar">
+        <div class="md-table-title-wrap">
+          <h2 class="md-table-title" data-i18n="listHeaderTitle">寄送目的地清單</h2>
+          <span class="md-rate-tag" data-i18n="rateEffectiveTag">採用 2026年4月13日 生效之最新香港郵政小型信件 (P) 費率</span>
+        </div>
+
+        <div class="md-table-actions">
+          <button type="button" class="md-btn md-btn-flat md-ripple-surface" id="btnUndoAction" disabled>
+            <span class="material-icons">undo</span>
+            <span data-i18n="undoBtn">復原</span>
+          </button>
+          <button type="button" class="md-btn md-btn-flat md-ripple-surface" id="btnOpenStampDialog">
+            <span class="material-icons">confirmation_number</span>
+            <span data-i18n="stampBtn">湊票助手</span>
+          </button>
+          <button type="button" class="md-btn md-btn-flat md-ripple-surface" id="btnBatchAllAir">
+            <span class="material-icons">flight_takeoff</span>
+            <span data-i18n="batchAllAir">全設為空郵</span>
+          </button>
+          <button type="button" class="md-btn md-btn-flat md-ripple-surface" id="btnBatchAllSurface">
+            <span class="material-icons">directions_boat</span>
+            <span data-i18n="batchAllSurface">全設為平郵</span>
+          </button>
+          <button type="button" class="md-btn md-btn-flat md-ripple-surface" id="btnCopySummary">
+            <span class="material-icons">content_copy</span>
+            <span data-i18n="copySummary">複製資費明細</span>
+          </button>
+          <button type="button" class="md-btn md-btn-flat md-ripple-surface" id="btnShareUrl">
+            <span class="material-icons">share</span>
+            <span data-i18n="shareBtn">分享連結</span>
+          </button>
+          <button type="button" class="md-btn md-btn-flat-danger md-ripple-surface" id="btnClearAll">
+            <span class="material-icons">delete_sweep</span>
+            <span data-i18n="clearAll">清空清單</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="md-table-responsive">
+        <table class="md-data-table mobile-cards-table" id="destinationsTable">
+          <thead>
+            <tr>
+              <th data-i18n="colDestination">目的地 (國家/地區)</th>
+              <th class="th-center" data-i18n="colTotalQty">明信片數量</th>
+              <th class="th-center" data-i18n="colAirQty">空郵 (張)</th>
+              <th class="th-center" data-i18n="colSurfaceQty">平郵 (張)</th>
+              <th class="th-center" data-i18n="colRegQty">掛號 (件)</th>
+              <th data-i18n="colRowCompare">三種方案單地參考</th>
+              <th class="th-right" data-i18n="colSubtotal">小計 (HK$)</th>
+              <th class="th-center" data-i18n="colActions">操作</th>
+            </tr>
+          </thead>
+          <tbody id="destinationsTableBody"></tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div class="md-empty-state" id="emptyStateBox" style="display:none;">
+          <span class="material-icons">local_post_office</span>
+          <div class="md-empty-title" data-i18n="emptyStateTitle">尚未添加寄送目的地</div>
+          <p class="md-empty-desc" data-i18n="emptyStateDesc">
+            請在上方搜尋欄輸入國家/地區名稱或兩字代碼（如 DE、US、JP、TW），或點擊常用國家標籤即可開始計算。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Official Hongkong Post Rate & Zoning Reference Table Card -->
+    <section class="md-card md-reference-card md-choreo-item" style="--choreo-index: 3;" aria-label="Official Postage Rate Schedule">
+      <div class="md-reference-header md-ripple-surface" id="referenceToggleHeader">
+        <div>
+          <div class="md-reference-title">
+            <span class="material-icons">table_chart</span>
+            <span data-i18n="rateTableTitle">香港郵政明信片（小型信件 P）資費及分區速查表</span>
+          </div>
+          <div class="md-reference-subtitle" data-i18n="rateTableSubtitle">
+            適用於尺寸 90×140mm 至 165×245mm、厚度 ≤ 5mm 之明信片及小型信件（2026年4月13日起生效）
+          </div>
+        </div>
+        <span class="material-icons md-expand-icon" id="referenceToggleIcon">expand_less</span>
+      </div>
+
+      <div class="md-collapsible-wrapper" id="referenceCollapsible">
+        <div class="md-collapsible-inner">
+          <!-- Desktop Table View -->
+          <div class="md-table-responsive md-desktop-rate-table">
+            <table class="md-data-table" id="desktopRateScheduleTable">
+              <thead id="desktopRateTableHead">
+                <tr>
+                  <th data-i18n="rateColZone">郵遞分區</th>
+                  <th data-i18n="rateColScope">主要涵蓋地區</th>
+                  <th class="th-right" data-i18n="rateColSurface20">平郵 (≤20g)</th>
+                  <th class="th-right" data-i18n="rateColAir20">空郵 (≤20g)</th>
+                  <th class="th-right" data-i18n="rateColSurface30">平郵 (21–50g)</th>
+                  <th class="th-right" data-i18n="rateColAir30">空郵 (21–30g)</th>
+                  <th class="th-right" data-i18n="rateColReg">掛號附加費</th>
+                </tr>
+              </thead>
+              <tbody id="desktopRateTableBody"></tbody>
+            </table>
+          </div>
+
+          <!-- Mobile Compact Zone Cards View (No Horizontal Overflow!) -->
+          <div class="md-mobile-rate-cards" id="mobileRateCardsContainer"></div>
+
+          <div class="md-reference-footer">
+            <span class="md-reference-disclaimer" data-i18n="rateDisclaimer">各目的地之實際郵遞服務供應情況及郵費標準，概以香港郵政最新公布為準。</span>
+            <div class="md-official-links-group" id="officialLinksGroup">
+              <a
+                href="https://www.hongkongpost.hk/tc/postage_calculator/index.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="md-official-link"
+              >
+                <span data-i18n="hkRatesLinkText">香港郵政官方《主要郵費及計算機》</span>
+                <span class="material-icons" style="font-size:15px;">open_in_new</span>
+              </a>
+              <span class="md-links-sep" aria-hidden="true">·</span>
+              <a
+                href="https://www.hongkongpost.hk/tc/preparation/posting/zoning/index.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="md-official-link"
+                id="officialZoningLink"
+              >
+                <span data-i18n="officialLinkText">香港郵政官方《空郵及平郵郵遞分區表》</span>
+                <span class="material-icons" style="font-size:15px;">open_in_new</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Sticky Bottom Summary Bar (QoL for Mobile Scrolling) -->
+  <div class="md-mobile-bottom-bar" id="mobileBottomBar">
+    <div class="md-mobile-bar-left" id="mobileBarScrollTop">
+      <span class="md-mobile-bar-label" data-i18n="grandTotalLabel">當前明信片總郵資</span>
+      <div class="md-mobile-bar-amount">
+        <span id="mobileBarCurrency">HK$</span>
+        <strong id="mobileBarTotalAmount">0.0</strong>
+        <span class="md-mobile-bar-meta" id="mobileBarMeta">(0 張)</span>
+      </div>
+    </div>
+    <div class="md-mobile-bar-actions">
+      <button type="button" class="md-btn md-btn-raised md-ripple-surface" id="btnMobileCopy">
+        <span class="material-icons">content_copy</span>
+        <span data-i18n="copySummary">複製資費明細</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MD1 Theme & Palette Selector Dialog (24dp) -->
+  <div class="md-dialog-backdrop" id="themeDialogBackdrop" role="dialog" aria-modal="true">
+    <div class="md-dialog md-dialog-wide">
+      <div class="md-dialog-header">
+        <div class="md-dialog-title" data-i18n="themeDialogTitle">外觀與主題</div>
+        <button type="button" class="md-icon-btn md-ripple-surface" id="btnCloseThemeDialog" aria-label="Close">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="md-dialog-content" id="themeOptionsContainer"></div>
+    </div>
+  </div>
+
+  <!-- MD1 Language Selector Dialog (24dp) -->
+  <div class="md-dialog-backdrop" id="langDialogBackdrop" role="dialog" aria-modal="true">
+    <div class="md-dialog">
+      <div class="md-dialog-header">
+        <div class="md-dialog-title" data-i18n="langDialogTitle">介面語言</div>
+        <button type="button" class="md-icon-btn md-ripple-surface" id="btnCloseLangDialog" aria-label="Close">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="md-dialog-content" id="langOptionsContainer"></div>
+    </div>
+  </div>
+
+  <!-- MD1 Stamp Combinator & Top-Up Helper Dialog (24dp) -->
+  <div class="md-dialog-backdrop" id="stampDialogBackdrop" role="dialog" aria-modal="true">
+    <div class="md-dialog md-dialog-wide">
+      <div class="md-dialog-header">
+        <div class="md-dialog-title" id="stampDialogTitleEl" data-i18n="stampDialogTitle">香港郵政 · 郵票面額與舊票補差助手</div>
+        <button type="button" class="md-icon-btn md-ripple-surface" id="btnCloseStampDialog" aria-label="Close">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="md-dialog-content" id="stampHelperContainer"></div>
+    </div>
+  </div>
+
+  <!-- MD1 Snackbar (6dp, with optional Action Button) -->
+  <div class="md-snackbar" id="mdSnackbar" role="status" aria-live="polite">
+    <span id="mdSnackbarText"></span>
+    <button type="button" class="md-snackbar-action md-ripple-surface" id="mdSnackbarAction" style="display:none;"></button>
+  </div>
+
+  <!-- MD1 Radial Ink Wave Overlay for Theme & Dark/Light Mode Transitions -->
+  <div class="md-theme-wave-overlay" id="mdThemeWaveOverlay" aria-hidden="true"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

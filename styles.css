@@ -1,0 +1,2842 @@
+/**
+ * Material Design 1 (m1.material.io) Authentic Stylesheet
+ * Strictly adheres to Google Material Design 1 (2014–2017) guidelines:
+ * - Paper & Ink metaphor, 2px corner radius on cards/buttons/dialogs/menus
+ * - Exact Z-depth elevation box-shadows (1dp, 2dp, 4dp, 6dp, 8dp, 16dp, 24dp)
+ * - 8dp baseline grid & 48dp touch targets
+ * - Primary 500 / 700 / 100 + Accent A200 / A700 color system
+ * - Standard MD1 typography scale & text opacities (87%, 54%, 38%, 12%)
+ * - Quantum Motion curves:
+ *   - Standard (FastOutSlowIn): cubic-bezier(0.4, 0.0, 0.2, 1)
+ *   - Deceleration (LinearOutSlowIn): cubic-bezier(0.0, 0.0, 0.2, 1)
+ *   - Acceleration (FastOutLinearIn): cubic-bezier(0.4, 0.0, 1, 1)
+ */
+
+:root {
+  /* Default Theme: Pillar Box Crimson (British Hong Kong Royal Mail) */
+  --md-primary-500: #C62828;
+  --md-primary-700: #8E0000;
+  --md-primary-100: #FFCDD2;
+  --md-dark-primary-text: #FF5252;
+  --md-dark-badge-bg: rgba(255, 82, 82, 0.18);
+  --md-accent-a200: #FFA000;
+  --md-accent-a700: #FF6F00;
+  --md-accent-text: rgba(0, 0, 0, 0.87);
+
+  /* Semantic Primary Text & Badge Tokens (Adaptive for Light & Dark Mode) */
+  --md-primary-text: var(--md-primary-500);
+  --md-badge-bg: var(--md-primary-100);
+  --md-badge-text: var(--md-primary-700);
+
+  /* MD1 Light Theme Neutral Surfaces & Paper */
+  --md-bg-canvas: #EEEEEE;
+  --md-bg-surface: #FFFFFF;
+  --md-bg-subtle: #FAFAFA;
+  --md-chip-bg: #E0E0E0;
+  --md-chip-hover: #D5D5D5;
+
+  /* MD1 Text Opacities on Light Background */
+  --md-text-primary: rgba(0, 0, 0, 0.87);
+  --md-text-secondary: rgba(0, 0, 0, 0.54);
+  --md-text-hint: rgba(0, 0, 0, 0.38);
+  --md-text-disabled: rgba(0, 0, 0, 0.22);
+  --md-divider: rgba(0, 0, 0, 0.12);
+  --md-input-underline: rgba(0, 0, 0, 0.42);
+  --md-hover-overlay: rgba(0, 0, 0, 0.04);
+  --md-selected-card-bg: rgba(0, 0, 0, 0.02);
+  --md-no-air-bg: #FFF3E0;
+  --md-no-air-text: #E65100;
+  --md-danger-color: #D32F2F;
+
+  /* MD1 Exact Elevation Shadows */
+  --md-shadow-1dp: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12);
+  --md-shadow-2dp: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);
+  --md-shadow-4dp: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12);
+  --md-shadow-6dp: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+  --md-shadow-8dp: 0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12);
+  --md-shadow-16dp: 0 8px 10px -5px rgba(0,0,0,0.2), 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12);
+  --md-shadow-24dp: 0 11px 15px -7px rgba(0,0,0,0.2), 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12);
+
+  /* MD1 Quantum Motion Easing Curves */
+  --md-curve-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --md-curve-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --md-curve-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+  --md-curve-sharp: cubic-bezier(0.4, 0.0, 0.6, 1);
+
+  /* Language-specific Font Stacks */
+  --md-font-tc: 'Roboto', 'Noto Sans HK', 'Noto Sans TC', 'PingFang HK', 'Microsoft JhengHei', -apple-system, BlinkMacSystemFont, sans-serif;
+  --md-font-sc: 'Roboto', 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+  --md-font-en: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans HK', 'Noto Sans SC', sans-serif;
+  --md-font-sans: var(--md-font-tc);
+  --md-font-emoji: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+}
+
+/* ==========================================================================
+   MD1 Official Dark Theme (https://m1.material.io/style/color.html#color-themes)
+   ========================================================================== */
+html[data-color-scheme="dark"] {
+  color-scheme: dark;
+  --md-primary-text: var(--md-dark-primary-text, #FF5252);
+  --md-badge-bg: var(--md-dark-badge-bg, rgba(255, 82, 82, 0.18));
+  --md-badge-text: var(--md-primary-100);
+
+  /* MD1 Dark Surfaces (#121212 Canvas, #212121 Paper Cards, #2A2A2A Elevated Strips) */
+  --md-bg-canvas: #121212;
+  --md-bg-surface: #212121;
+  --md-bg-subtle: #2A2A2A;
+  --md-chip-bg: #333333;
+  --md-chip-hover: #424242;
+
+  /* MD1 Dark Theme Text Opacities */
+  --md-text-primary: rgba(255, 255, 255, 0.92);
+  --md-text-secondary: rgba(255, 255, 255, 0.68);
+  --md-text-hint: rgba(255, 255, 255, 0.42);
+  --md-text-disabled: rgba(255, 255, 255, 0.22);
+  --md-divider: rgba(255, 255, 255, 0.12);
+  --md-input-underline: rgba(255, 255, 255, 0.42);
+  --md-hover-overlay: rgba(255, 255, 255, 0.06);
+  --md-selected-card-bg: rgba(255, 255, 255, 0.05);
+  --md-no-air-bg: rgba(255, 152, 0, 0.16);
+  --md-no-air-text: #FFB74D;
+  --md-danger-color: #EF5350;
+
+  /* Deeper Z-Depth Shadows for Dark Theme */
+  --md-shadow-1dp: 0 1px 3px 0 rgba(0,0,0,0.45), 0 1px 1px 0 rgba(0,0,0,0.34), 0 2px 1px -1px rgba(0,0,0,0.28);
+  --md-shadow-2dp: 0 2px 3px 0 rgba(0,0,0,0.45), 0 3px 2px -2px rgba(0,0,0,0.5), 0 1px 6px 0 rgba(0,0,0,0.38);
+  --md-shadow-4dp: 0 2px 4px -1px rgba(0,0,0,0.5), 0 4px 6px 0 rgba(0,0,0,0.4), 0 1px 10px 0 rgba(0,0,0,0.35);
+  --md-shadow-8dp: 0 5px 5px -3px rgba(0,0,0,0.55), 0 8px 12px 1px rgba(0,0,0,0.45), 0 3px 16px 2px rgba(0,0,0,0.38);
+  --md-shadow-24dp: 0 11px 15px -7px rgba(0,0,0,0.65), 0 24px 38px 3px rgba(0,0,0,0.55), 0 9px 46px 8px rgba(0,0,0,0.45);
+}
+
+/* Strict Language-Specific Glyph & Font Family Binding */
+html[lang="zh-CN"],
+html[lang="zh-CN"] body,
+[lang="zh-CN"] {
+  --md-font-sans: var(--md-font-sc);
+  font-family: var(--md-font-sc);
+  font-variant-east-asian: simplified;
+}
+
+html[lang="zh-HK"],
+html[lang="zh-HK"] body,
+[lang="zh-HK"] {
+  --md-font-sans: var(--md-font-tc);
+  font-family: var(--md-font-tc);
+  font-variant-east-asian: traditional;
+}
+
+html[lang="en"],
+html[lang="en"] body,
+[lang="en"] {
+  --md-font-sans: var(--md-font-en);
+  font-family: var(--md-font-en);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--md-font-sans);
+  background-color: var(--md-bg-canvas);
+  color: var(--md-text-primary);
+  font-size: 14px;
+  line-height: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  transition: background-color 0.3s var(--md-curve-standard);
+}
+
+/* Flag Emoji Rendering with Noto Color Emoji fallback for Windows */
+.flag-emoji {
+  font-family: var(--md-font-emoji);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ==========================================================================
+   MD1 Choreographed Page Entrance & Motion Utilities
+   ========================================================================== */
+.md-choreo-item {
+  animation: mdChoreoEnter 0.42s var(--md-curve-decelerate) both;
+  animation-delay: calc(var(--choreo-index, 0) * 65ms);
+}
+
+@keyframes mdChoreoEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mdRowEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    background-color: var(--md-primary-100);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    background-color: transparent;
+  }
+}
+
+@keyframes mdRowPulse {
+  0% {
+    background-color: transparent;
+  }
+  25% {
+    background-color: var(--md-primary-100);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes mdRowExit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+}
+
+.row-enter-anim {
+  animation: mdRowEnter 0.38s var(--md-curve-decelerate);
+}
+
+.row-pulse-anim {
+  animation: mdRowPulse 0.65s var(--md-curve-standard);
+}
+
+.row-exit-anim {
+  animation: mdRowExit 0.2s var(--md-curve-accelerate) forwards;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   MD1 Status Bar & App Bar (4dp Elevation)
+   ========================================================================== */
+.md-status-bar {
+  height: 8px;
+  background-color: var(--md-primary-700);
+  width: 100%;
+  transition: background-color 0.3s var(--md-curve-standard);
+}
+
+.md-app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--md-primary-500);
+  color: #FFFFFF;
+  box-shadow: var(--md-shadow-4dp);
+  transition: background-color 0.3s var(--md-curve-standard), box-shadow 0.3s var(--md-curve-standard);
+}
+
+.md-app-bar-row {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.md-app-bar-title-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.md-app-bar-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.25s var(--md-curve-standard), background-color 0.25s var(--md-curve-standard);
+}
+
+.md-app-bar-title-group:hover .md-app-bar-icon {
+  transform: scale(1.06);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.md-app-bar-titles {
+  min-width: 0;
+}
+
+.md-app-bar-title {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.md-app-bar-subtitle {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.md-app-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Master Switch: Origin Postal Service (Hongkong Post vs China Post) */
+.md-operator-switch {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 3px;
+  border-radius: 2px;
+  gap: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+.md-operator-btn {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--md-font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.22s var(--md-curve-standard), color 0.22s var(--md-curve-standard), box-shadow 0.22s var(--md-curve-standard);
+}
+
+.md-operator-btn:hover:not(.is-active) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+}
+
+.md-operator-btn.is-active {
+  background: #FFFFFF;
+  color: var(--md-primary-700);
+  font-weight: 700;
+  box-shadow: var(--md-shadow-1dp);
+}
+
+/* MD1 Toolbar Action Button */
+.md-toolbar-btn {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--md-font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s var(--md-curve-standard), box-shadow 0.2s var(--md-curve-standard);
+}
+
+.md-toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+  box-shadow: var(--md-shadow-1dp);
+}
+
+.md-toolbar-btn .material-icons {
+  font-size: 18px;
+}
+
+/* ==========================================================================
+   Main Container (8dp Grid Layout)
+   ========================================================================== */
+.md-main-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 24px auto 48px;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+/* ==========================================================================
+   MD1 Paper Card (2px Radius, 2dp Resting -> 4dp Hover Elevation)
+   ========================================================================== */
+.md-card {
+  background-color: var(--md-bg-surface);
+  border-radius: 2px;
+  box-shadow: var(--md-shadow-2dp);
+  transition: background-color 0.3s var(--md-curve-standard), box-shadow 0.28s var(--md-curve-standard), border-color 0.28s var(--md-curve-standard);
+}
+
+.md-card:hover,
+.md-card:focus-within {
+  box-shadow: var(--md-shadow-4dp);
+}
+
+/* ==========================================================================
+   Grand Total Banner Card (Most Important Highlight)
+   ========================================================================== */
+.md-summary-card {
+  border-top: 4px solid var(--md-primary-500);
+  overflow: hidden;
+  transition: background-color 0.3s var(--md-curve-standard), border-top-color 0.3s var(--md-curve-standard), box-shadow 0.28s var(--md-curve-standard);
+}
+
+.md-summary-top {
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.md-grand-total-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-right: 1px solid var(--md-divider);
+  padding-right: 24px;
+}
+
+.md-grand-total-label {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--md-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.md-grand-total-value {
+  font-size: 42px;
+  font-weight: 500;
+  line-height: 48px;
+  color: var(--md-primary-text);
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  transform-origin: left center;
+  transition: color 0.3s var(--md-curve-standard), transform 0.22s var(--md-curve-decelerate);
+}
+
+.md-grand-total-value.is-popping {
+  transform: scale(1.045);
+}
+
+.md-grand-total-currency {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--md-text-secondary);
+}
+
+.md-grand-total-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--md-text-secondary);
+}
+
+.md-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  color: var(--md-text-primary);
+}
+
+.md-meta-pill .material-icons {
+  font-size: 16px;
+  color: var(--md-primary-text);
+  transition: color 0.3s var(--md-curve-standard);
+}
+
+/* Three-Component Breakdown (Air, Surface, Registration) */
+.md-breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.md-breakdown-item {
+  background-color: var(--md-bg-subtle);
+  border: 1px solid var(--md-divider);
+  border-radius: 2px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: background-color 0.3s var(--md-curve-standard), border-color 0.2s var(--md-curve-standard), transform 0.2s var(--md-curve-standard), box-shadow 0.2s var(--md-curve-standard);
+}
+
+.md-breakdown-item:hover {
+  border-color: var(--md-primary-text);
+  box-shadow: var(--md-shadow-1dp);
+  transform: translateY(-1px);
+}
+
+.md-breakdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--md-text-secondary);
+}
+
+.md-breakdown-header .material-icons {
+  font-size: 16px;
+  color: var(--md-primary-text);
+  transition: color 0.3s var(--md-curve-standard);
+}
+
+.md-breakdown-amount {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--md-text-primary);
+}
+
+.md-breakdown-count {
+  font-size: 12px;
+  color: var(--md-text-secondary);
+}
+
+/* Instant All-Air / All-Surface / Registered Comparison Strip */
+.md-compare-bar {
+  background-color: var(--md-bg-subtle);
+  border-top: 1px solid var(--md-divider);
+  padding: 12px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: background-color 0.3s var(--md-curve-standard);
+}
+
+.md-compare-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--md-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.md-compare-title .material-icons {
+  font-size: 16px;
+  color: var(--md-primary-text);
+}
+
+.md-compare-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.md-compare-badge {
+  font-size: 13px;
+  color: var(--md-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.md-compare-badge strong {
+  color: var(--md-text-primary);
+  font-weight: 500;
+}
+
+/* Cross-Operator Rate Comparison Bar (HK Post vs China Post) */
+.md-cross-compare-bar {
+  border-top: 1px solid var(--md-divider);
+  padding: 10px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  font-size: 12.5px;
+  color: var(--md-text-secondary);
+  background-color: var(--md-bg-surface);
+}
+
+.md-cross-compare-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.md-cross-compare-left strong {
+  color: var(--md-primary-text);
+  font-weight: 500;
+  font-size: 13.5px;
+}
+
+.md-cross-compare-approx {
+  color: var(--md-text-hint);
+  font-size: 12px;
+}
+
+.md-cross-switch-btn {
+  border: 1px solid var(--md-primary-500);
+  background: transparent;
+  color: var(--md-primary-text);
+  border-radius: 2px;
+  padding: 3px 10px;
+  font-family: var(--md-font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.15s var(--md-curve-standard);
+}
+
+.md-cross-switch-btn:hover {
+  background-color: var(--md-badge-bg);
+}
+
+/* Contextual Postal Tips Strip (Par Avion / CN Country Annotation / Reg Barcode) */
+.md-postal-tips-strip {
+  border-top: 1px solid var(--md-divider);
+  padding: 10px 24px;
+  background-color: var(--md-bg-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.md-postal-tip-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--md-text-secondary);
+}
+
+.par-avion-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #1565C0;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 2px;
+  border-left: 3px solid #D32F2F;
+  border-right: 3px solid #D32F2F;
+  box-shadow: var(--md-shadow-1dp);
+  flex-shrink: 0;
+}
+
+.reg-r-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #C62828;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 2px;
+  box-shadow: var(--md-shadow-1dp);
+  flex-shrink: 0;
+}
+
+/* China Post Chinese Country Name Annotation Badge inside Destination Cell */
+.cn-annotate-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 3px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  background-color: var(--md-badge-bg);
+  color: var(--md-badge-text);
+  width: fit-content;
+}
+
+/* ==========================================================================
+   Search & Controls Card (MD1 Floating Label Input + Helper Text + Autocomplete)
+   ========================================================================== */
+.md-controls-card {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.md-controls-top-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+}
+
+/* MD1 Text Field with Floating Label, Animated Bottom Line & Helper Text */
+.md-textfield-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.md-textfield {
+  position: relative;
+  padding-top: 18px;
+  padding-bottom: 6px;
+}
+
+.md-textfield-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.md-textfield-icon {
+  color: var(--md-text-secondary);
+  font-size: 20px;
+  transition: color 0.2s var(--md-curve-standard), transform 0.2s var(--md-curve-standard);
+}
+
+.md-textfield.is-focused .md-textfield-icon {
+  color: var(--md-primary-text);
+  transform: scale(1.08);
+}
+
+.md-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--md-font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--md-text-primary);
+  padding: 4px 0;
+}
+
+.md-input::placeholder {
+  color: transparent;
+}
+
+.md-floating-label {
+  position: absolute;
+  left: 28px;
+  top: 22px;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--md-text-secondary);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 0.2s var(--md-curve-standard), color 0.2s var(--md-curve-standard);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 36px);
+}
+
+.md-textfield.is-focused .md-floating-label,
+.md-textfield.has-value .md-floating-label {
+  transform: translateY(-20px) scale(0.75);
+  color: var(--md-primary-text);
+  font-weight: 500;
+}
+
+.md-textfield:not(.is-focused).has-value .md-floating-label {
+  color: var(--md-text-secondary);
+}
+
+.md-underline {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--md-input-underline);
+}
+
+.md-underline-ripple {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--md-primary-text);
+  transform: scaleX(0);
+  transition: transform 0.22s var(--md-curve-standard), background-color 0.3s var(--md-curve-standard);
+}
+
+.md-textfield.is-focused .md-underline-ripple {
+  transform: scaleX(1);
+}
+
+.md-helper-text {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--md-text-secondary);
+  padding-top: 2px;
+  padding-left: 28px;
+  transition: color 0.2s var(--md-curve-standard);
+}
+
+.md-textfield.is-focused + .md-helper-text {
+  color: var(--md-primary-text);
+}
+
+/* MD1 Autocomplete Dropdown Menu (8dp Elevation + Origin-Top Expansion) */
+.md-autocomplete-menu {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  right: 0;
+  background: var(--md-bg-surface);
+  border-radius: 2px;
+  box-shadow: var(--md-shadow-8dp);
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 95;
+  padding: 8px 0;
+  opacity: 0;
+  transform: scaleY(0.9) translateY(-4px);
+  transform-origin: top center;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.18s var(--md-curve-decelerate), transform 0.18s var(--md-curve-decelerate), visibility 0.18s;
+}
+
+.md-autocomplete-menu.is-open {
+  opacity: 1;
+  transform: scaleY(1) translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.md-autocomplete-item {
+  min-height: 48px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s var(--md-curve-standard);
+}
+
+.md-autocomplete-item:hover,
+.md-autocomplete-item.is-active {
+  background-color: var(--md-hover-overlay);
+}
+
+.md-ac-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.md-ac-flag {
+  font-size: 22px;
+}
+
+.md-ac-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--md-text-primary);
+}
+
+.md-ac-subname {
+  font-size: 12px;
+  color: var(--md-text-secondary);
+  margin-left: 6px;
+}
+
+.md-ac-code {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 2px;
+  background-color: var(--md-badge-bg);
+  color: var(--md-badge-text);
+}
+
+.md-ac-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--md-text-secondary);
+}
+
+/* Option Toggles (Default Mode + Weight Step) */
+.md-options-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding-top: 6px;
+}
+
+.md-segmented-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.md-field-caption {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--md-text-secondary);
+}
+
+.md-segmented-control {
+  display: inline-flex;
+  border: 1px solid var(--md-divider);
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--md-bg-subtle);
+}
+
+.md-segment-btn {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  padding: 6px 12px;
+  height: 36px;
+  font-family: var(--md-font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--md-text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.2s var(--md-curve-standard), color 0.2s var(--md-curve-standard);
+}
+
+.md-segment-btn + .md-segment-btn {
+  border-left: 1px solid var(--md-divider);
+}
+
+.md-segment-btn.is-active {
+  background-color: var(--md-primary-500);
+  color: #FFFFFF;
+}
+
+/* MD1 Popular Destination Chips (32dp Height, 16dp Radius) */
+.md-chips-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--md-divider);
+}
+
+.md-chips-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.md-chips-toggle-btn {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  color: var(--md-primary-text);
+  font-family: var(--md-font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  align-items: center;
+  gap: 2px;
+}
+
+.md-chips-toggle-btn .material-icons {
+  font-size: 16px;
+  transition: transform 0.25s var(--md-curve-standard);
+}
+
+.md-chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  transition: max-height 0.3s var(--md-curve-standard);
+}
+
+.md-chip {
+  position: relative;
+  overflow: hidden;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
+  border: none;
+  background-color: var(--md-chip-bg);
+  color: var(--md-text-primary);
+  font-family: var(--md-font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s var(--md-curve-standard), color 0.2s var(--md-curve-standard), box-shadow 0.2s var(--md-curve-standard), transform 0.15s var(--md-curve-standard);
+}
+
+.md-chip:hover {
+  background-color: var(--md-chip-hover);
+  box-shadow: var(--md-shadow-1dp);
+  transform: translateY(-1px);
+}
+
+.md-chip:active {
+  transform: translateY(0);
+}
+
+.md-chip.is-selected {
+  background-color: var(--md-badge-bg);
+  color: var(--md-badge-text);
+  font-weight: 500;
+}
+
+.md-chip-code {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+/* ==========================================================================
+   MD1 Data Table Card (Multi-Destination Postcard Calculator)
+   ========================================================================== */
+.md-table-card {
+  overflow: hidden;
+}
+
+.md-table-toolbar {
+  min-height: 64px;
+  padding: 12px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--md-divider);
+}
+
+.md-table-title-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.md-table-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--md-text-primary);
+}
+
+.md-rate-tag {
+  font-size: 12px;
+  color: var(--md-badge-text);
+  background-color: var(--md-badge-bg);
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-weight: 500;
+  transition: background-color 0.3s var(--md-curve-standard), color 0.3s var(--md-curve-standard);
+}
+
+.md-table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+/* MD1 Flat & Raised Buttons */
+.md-btn {
+  position: relative;
+  overflow: hidden;
+  height: 36px;
+  min-width: 64px;
+  padding: 0 12px;
+  border-radius: 2px;
+  border: none;
+  font-family: var(--md-font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: box-shadow 0.2s var(--md-curve-standard), background-color 0.2s var(--md-curve-standard), color 0.2s var(--md-curve-standard);
+}
+
+.md-btn .material-icons {
+  font-size: 18px;
+}
+
+.md-btn-flat {
+  background: transparent;
+  color: var(--md-primary-text);
+}
+
+.md-btn-flat:hover {
+  background-color: var(--md-hover-overlay);
+}
+
+.md-btn:disabled {
+  color: var(--md-text-disabled) !important;
+  background-color: transparent !important;
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.md-btn-flat-danger {
+  background: transparent;
+  color: var(--md-danger-color);
+}
+
+.md-btn-flat-danger:hover {
+  background-color: rgba(211, 47, 47, 0.12);
+}
+
+.md-btn-raised {
+  background-color: var(--md-primary-500);
+  color: #FFFFFF;
+  box-shadow: var(--md-shadow-2dp);
+}
+
+.md-btn-raised:hover {
+  box-shadow: var(--md-shadow-4dp);
+}
+
+.md-btn-raised:active {
+  box-shadow: var(--md-shadow-8dp);
+}
+
+/* MD1 Data Table */
+.md-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.md-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.md-data-table th {
+  height: 48px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--md-text-secondary);
+  border-bottom: 1px solid var(--md-divider);
+  white-space: nowrap;
+  background-color: var(--md-bg-subtle);
+}
+
+.md-data-table th:first-child,
+.md-data-table td:first-child {
+  padding-left: 24px;
+}
+
+.md-data-table th:last-child,
+.md-data-table td:last-child {
+  padding-right: 24px;
+}
+
+.md-data-table td {
+  min-height: 60px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--md-divider);
+  vertical-align: middle;
+}
+
+.md-data-table tbody tr {
+  transition: background-color 0.18s var(--md-curve-standard);
+}
+
+.md-data-table tbody tr:hover {
+  background-color: var(--md-hover-overlay);
+}
+
+.th-center, .td-center {
+  text-align: center;
+}
+
+.th-right, .td-right {
+  text-align: right;
+}
+
+/* Destination Cell */
+.dest-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dest-flag {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.dest-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dest-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.dest-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--md-text-primary);
+}
+
+.dest-iso-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background-color: var(--md-chip-bg);
+  color: var(--md-text-primary);
+}
+
+.dest-zone-text {
+  font-size: 12px;
+  color: var(--md-text-secondary);
+}
+
+/* Stepper Control for Postcard Counts */
+.stepper-group {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.stepper-box {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--md-divider);
+  border-radius: 2px;
+  background-color: var(--md-bg-surface);
+  height: 34px;
+  transition: border-color 0.2s var(--md-curve-standard), box-shadow 0.2s var(--md-curve-standard), background-color 0.3s var(--md-curve-standard);
+}
+
+.stepper-box:focus-within {
+  border-color: var(--md-primary-text);
+  box-shadow: 0 0 0 1px var(--md-badge-bg);
+}
+
+.stepper-box.is-highlighted {
+  border-color: var(--md-primary-text);
+}
+
+.stepper-btn {
+  width: 30px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--md-text-secondary);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s var(--md-curve-standard), color 0.15s var(--md-curve-standard);
+}
+
+.stepper-btn:hover:not(:disabled) {
+  background-color: var(--md-hover-overlay);
+  color: var(--md-primary-text);
+}
+
+.stepper-btn:disabled {
+  color: var(--md-text-disabled);
+  cursor: not-allowed;
+}
+
+.stepper-input {
+  width: 40px;
+  height: 32px;
+  border: none;
+  border-left: 1px solid var(--md-divider);
+  border-right: 1px solid var(--md-divider);
+  text-align: center;
+  font-family: var(--md-font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--md-text-primary);
+  background: transparent;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.stepper-input::-webkit-outer-spin-button,
+.stepper-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.unit-rate-tag {
+  font-size: 11px;
+  color: var(--md-text-secondary);
+  line-height: 14px;
+}
+
+.no-air-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  border-radius: 2px;
+  background-color: var(--md-no-air-bg);
+  color: var(--md-no-air-text);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Single-Row Reference All-Air / All-Surface / +Reg Interactive Mini Pills */
+.row-compare-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 12px;
+  color: var(--md-text-secondary);
+}
+
+.row-compare-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 1px 6px;
+  border-radius: 2px;
+  transition: background-color 0.15s var(--md-curve-standard), color 0.15s var(--md-curve-standard);
+}
+
+.row-compare-line.is-clickable {
+  cursor: pointer;
+}
+
+.row-compare-line.is-clickable:hover {
+  background-color: var(--md-badge-bg);
+  color: var(--md-badge-text);
+}
+
+.row-compare-line strong {
+  color: var(--md-text-primary);
+  font-weight: 500;
+}
+
+/* Row Subtotal */
+.row-subtotal-amount {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--md-primary-text);
+  white-space: nowrap;
+  transition: color 0.3s var(--md-curve-standard);
+}
+
+.row-subtotal-formula {
+  font-size: 11px;
+  color: var(--md-text-secondary);
+  white-space: nowrap;
+}
+
+/* Icon Button */
+.md-icon-btn {
+  position: relative;
+  overflow: hidden;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--md-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s var(--md-curve-standard), color 0.15s var(--md-curve-standard);
+}
+
+.md-icon-btn:hover {
+  background-color: rgba(211, 47, 47, 0.12);
+  color: var(--md-danger-color);
+}
+
+/* Mobile-only compact row view is hidden on desktop */
+.mobile-compact-card {
+  display: none;
+}
+
+/* Empty State */
+.md-empty-state {
+  padding: 48px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--md-text-secondary);
+}
+
+.md-empty-state .material-icons {
+  font-size: 48px;
+  color: var(--md-text-hint);
+}
+
+.md-empty-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--md-text-primary);
+}
+
+.md-empty-desc {
+  font-size: 13px;
+  max-width: 460px;
+}
+
+/* ==========================================================================
+   Reference Rate Schedule Card (Smooth Collapsible + Mobile Zone Cards)
+   ========================================================================== */
+.md-reference-card {
+  overflow: hidden;
+}
+
+.md-reference-header {
+  position: relative;
+  overflow: hidden;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--md-divider);
+  transition: background-color 0.2s var(--md-curve-standard);
+}
+
+.md-reference-header:hover {
+  background-color: var(--md-hover-overlay);
+}
+
+.md-reference-title {
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.md-reference-title .material-icons {
+  color: var(--md-primary-text);
+}
+
+.md-reference-subtitle {
+  font-size: 12px;
+  color: var(--md-text-secondary);
+  margin-top: 2px;
+}
+
+.md-expand-icon {
+  color: var(--md-text-secondary);
+  transition: transform 0.3s var(--md-curve-standard);
+}
+
+.md-expand-icon.is-collapsed {
+  transform: rotate(-180deg);
+}
+
+/* Smooth MD1 Grid Height Collapsible */
+.md-collapsible-wrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.32s var(--md-curve-standard);
+}
+
+.md-collapsible-wrapper.is-collapsed {
+  grid-template-rows: 0fr;
+}
+
+.md-collapsible-inner {
+  overflow: hidden;
+}
+
+.md-mobile-rate-cards {
+  display: none;
+}
+
+.md-reference-footer {
+  padding: 12px 24px;
+  background-color: var(--md-bg-subtle);
+  border-top: 1px solid var(--md-divider);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--md-text-secondary);
+}
+
+.md-reference-disclaimer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--md-text-secondary);
+}
+
+.md-official-links-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.md-links-sep {
+  color: var(--md-text-hint);
+  user-select: none;
+}
+
+.md-official-link {
+  color: var(--md-primary-text);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.md-official-link:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   MD1 Dialogs (24dp Elevation, 2px Radius, Bidirectional Open & Close Motion)
+   - Opening uses LinearOutSlowIn / Deceleration: cubic-bezier(0.0, 0.0, 0.2, 1)
+   - Closing uses FastOutLinearIn / Acceleration: cubic-bezier(0.4, 0.0, 1, 1)
+   ========================================================================== */
+.md-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.54);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 195ms var(--md-curve-accelerate), visibility 0s linear 195ms;
+}
+
+.md-dialog-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 240ms var(--md-curve-decelerate), visibility 0s linear 0s;
+}
+
+.md-dialog {
+  background-color: var(--md-bg-surface);
+  border-radius: 2px;
+  box-shadow: var(--md-shadow-24dp);
+  width: 100%;
+  max-width: 440px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform-origin: var(--dialog-origin-x, 50%) var(--dialog-origin-y, 20%);
+  transform: scale(0.84) translateY(-12px);
+  transition:
+    transform 195ms var(--md-curve-accelerate),
+    opacity 175ms var(--md-curve-accelerate),
+    background-color 0.3s var(--md-curve-standard);
+}
+
+.md-dialog-backdrop.is-open .md-dialog {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition:
+    transform 260ms var(--md-curve-decelerate),
+    opacity 220ms var(--md-curve-decelerate),
+    background-color 0.3s var(--md-curve-standard);
+}
+
+.md-dialog.md-dialog-wide {
+  max-width: 520px;
+}
+
+.md-dialog-header {
+  padding: 14px 18px 12px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--md-divider);
+  flex-shrink: 0;
+}
+
+.md-dialog-title {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--md-text-primary);
+}
+
+.md-dialog-content {
+  padding: 14px 20px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.md-dialog-content > * {
+  flex-shrink: 0;
+}
+
+.md-dialog-section-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--md-text-secondary);
+  letter-spacing: 0.02em;
+  margin-top: 4px;
+  margin-bottom: 2px;
+}
+
+.md-dialog-section-label:first-child {
+  margin-top: 0;
+}
+
+/* Appearance (Auto / Light / Dark) Segmented Control inside Theme Dialog */
+.md-scheme-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.md-scheme-btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--md-divider);
+  border-radius: 2px;
+  background-color: var(--md-bg-subtle);
+  color: var(--md-text-secondary);
+  min-height: 38px;
+  padding: 8px 6px;
+  font-family: var(--md-font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: border-color 0.2s var(--md-curve-standard), background-color 0.2s var(--md-curve-standard), color 0.2s var(--md-curve-standard), box-shadow 0.2s var(--md-curve-standard);
+}
+
+.md-scheme-btn .material-icons {
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.md-scheme-btn:hover {
+  background-color: var(--md-hover-overlay);
+  color: var(--md-text-primary);
+}
+
+.md-scheme-btn.is-selected {
+  border: 2px solid var(--md-primary-500);
+  padding: 7px 5px;
+  background-color: var(--md-badge-bg);
+  color: var(--md-badge-text);
+  box-shadow: var(--md-shadow-1dp);
+}
+
+/* Postal Themes Grid inside Theme Dialog */
+.md-postal-themes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.md-option-card {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  flex-shrink: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  border: 1px solid var(--md-divider);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+  background: var(--md-bg-surface);
+  text-align: left;
+  font-family: var(--md-font-sans);
+  transition: border-color 0.2s var(--md-curve-standard), background-color 0.2s var(--md-curve-standard), box-shadow 0.2s var(--md-curve-standard);
+}
+
+.md-option-card:hover {
+  background-color: var(--md-hover-overlay);
+  box-shadow: var(--md-shadow-1dp);
+}
+
+.md-option-card.is-selected {
+  border-color: var(--md-primary-500);
+  border-width: 2px;
+  padding: 9px 11px;
+  background-color: var(--md-selected-card-bg);
+}
+
+.md-theme-swatches {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.md-swatch-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: var(--md-shadow-1dp);
+}
+
+.md-option-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.md-option-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--md-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.md-option-desc {
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--md-text-secondary);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* MD1 Color Palette Swatch Grid inside Theme Dialog */
+.md-palette-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.md-palette-swatch-btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--md-divider);
+  border-radius: 2px;
+  background: var(--md-bg-surface);
+  padding: 9px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-family: var(--md-font-sans);
+  text-align: left;
+  transition: border-color 0.2s var(--md-curve-standard), box-shadow 0.2s var(--md-curve-standard), transform 0.15s var(--md-curve-standard);
+}
+
+.md-palette-swatch-btn:hover {
+  box-shadow: var(--md-shadow-1dp);
+  transform: translateY(-1px);
+}
+
+.md-palette-swatch-btn.is-selected {
+  border: 2px solid var(--md-primary-500);
+  padding: 8px 9px;
+  background-color: var(--md-selected-card-bg);
+}
+
+.md-palette-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: var(--md-shadow-1dp);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+}
+
+.md-palette-dot-accent {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid var(--md-bg-surface);
+}
+
+.md-palette-name {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--md-text-primary);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* ==========================================================================
+   MD1 Snackbar (6dp Elevation, #323232 Surface)
+   ========================================================================== */
+.md-snackbar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translate(-50%, 100px);
+  background-color: #323232;
+  color: #FFFFFF;
+  min-height: 48px;
+  min-width: 288px;
+  max-width: 568px;
+  padding: 14px 24px;
+  border-radius: 2px;
+  box-shadow: var(--md-shadow-6dp);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s var(--md-curve-decelerate), opacity 0.25s var(--md-curve-decelerate);
+}
+
+.md-snackbar.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.md-snackbar-action {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  color: #FFD740;
+  font-family: var(--md-font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 6px 10px;
+  margin: -6px -8px -6px 0;
+  border-radius: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.15s var(--md-curve-standard);
+}
+
+.md-snackbar-action:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ==========================================================================
+   Stamp Combinator & Top-Up Helper Dialog Styles
+   ========================================================================== */
+.stamp-note-banner {
+  padding: 8px 12px;
+  border-radius: 2px;
+  background-color: var(--md-bg-subtle);
+  border-left: 3px solid var(--md-primary-500);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--md-text-secondary);
+}
+
+.stamp-batch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stamp-rate-card {
+  border: 1px solid var(--md-divider);
+  border-radius: 2px;
+  padding: 10px 12px;
+  background-color: var(--md-bg-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stamp-rate-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stamp-rate-badge {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--md-primary-text);
+}
+
+.stamp-rate-count {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 1px 8px;
+  border-radius: 12px;
+  background-color: var(--md-badge-bg);
+  color: var(--md-badge-text);
+}
+
+.stamp-combos-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.stamp-combo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px dashed var(--md-primary-500);
+  background-color: var(--md-bg-subtle);
+  font-size: 12px;
+  color: var(--md-text-primary);
+}
+
+.stamp-combo-pill small {
+  color: var(--md-text-secondary);
+  font-size: 11px;
+}
+
+.stamp-old-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.stamp-old-chip {
+  border: 1px solid var(--md-divider);
+  background-color: var(--md-bg-surface);
+  color: var(--md-text-primary);
+  border-radius: 2px;
+  padding: 5px 10px;
+  font-family: var(--md-font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s var(--md-curve-standard), background-color 0.15s var(--md-curve-standard);
+}
+
+.stamp-old-chip.is-selected {
+  border-color: var(--md-primary-500);
+  border-width: 2px;
+  padding: 4px 9px;
+  background-color: var(--md-badge-bg);
+  color: var(--md-badge-text);
+}
+
+.stamp-topup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.stamp-topup-item {
+  border: 1px solid var(--md-divider);
+  border-radius: 2px;
+  padding: 8px 10px;
+  background-color: var(--md-bg-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.stamp-topup-zone {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--md-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stamp-topup-Zone-rate {
+  color: var(--md-text-primary);
+  font-weight: 700;
+}
+
+.stamp-topup-Action {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--md-primary-text);
+}
+
+.stamp-topup-formula {
+  font-size: 11px;
+  color: var(--md-text-secondary);
+}
+
+/* Mobile Sticky Bottom Bar (Hidden on Desktop) */
+.md-mobile-bottom-bar {
+  display: none;
+}
+
+/* ==========================================================================
+   MD1 Radial Ink Ripple & Theme/Color-Scheme Wave Transition Animations
+   ========================================================================== */
+.md-ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.22;
+  transform: scale(0);
+  pointer-events: none;
+  animation: mdRippleAnim 0.55s var(--md-curve-decelerate) forwards;
+}
+
+@keyframes mdRippleAnim {
+  to {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+/* Sun / Moon Icon Rotation Animation in App Bar */
+.md-scheme-icon {
+  display: inline-block;
+  transition: transform 0.45s var(--md-curve-decelerate);
+}
+
+.md-scheme-icon.is-spinning {
+  animation: mdSchemeIconSpin 0.48s var(--md-curve-decelerate);
+}
+
+@keyframes mdSchemeIconSpin {
+  0% {
+    transform: rotate(-140deg) scale(0.5);
+    opacity: 0.3;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/* View Transition API Circular Reveal (Material Design 1 Radial Action) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html.is-theme-transitioning::view-transition-new(root) {
+  animation: mdThemeCircleReveal 0.48s var(--md-curve-standard) forwards;
+}
+
+@keyframes mdThemeCircleReveal {
+  from {
+    clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 50%));
+  }
+}
+
+/* Fallback & Tactile MD1 Radial Ink Wave Overlay when switching Themes / Modes */
+.md-theme-wave-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.md-theme-wave-circle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(
+    circle,
+    transparent 45%,
+    var(--wave-color, var(--md-primary-500)) 78%,
+    transparent 100%
+  );
+  opacity: 0.42;
+  animation: mdThemeWaveExpand 0.56s var(--md-curve-decelerate) forwards;
+}
+
+@keyframes mdThemeWaveExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.48;
+  }
+  70% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Responsive Mobile Adaptation & High-QoL Compact Layout (< 880px)
+   ========================================================================== */
+@media (max-width: 880px) {
+  .md-app-bar-row {
+    height: 56px;
+    padding: 0 12px;
+  }
+
+  .md-app-bar-title {
+    font-size: 17px;
+  }
+
+  .md-app-bar-subtitle {
+    display: none;
+  }
+
+  .md-toolbar-btn span.btn-text {
+    display: none;
+  }
+
+  .md-toolbar-btn {
+    padding: 0 10px;
+  }
+
+  .md-operator-btn {
+    height: 28px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .md-operator-btn .op-text {
+    display: none;
+  }
+  .md-operator-btn {
+    padding: 0 7px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 880px) {
+
+  .md-main-container {
+    margin: 10px auto 80px;
+    padding: 0 8px;
+    gap: 10px;
+  }
+
+  /* Compact Summary Card on Mobile */
+  .md-summary-top {
+    grid-template-columns: 1fr;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .md-grand-total-box {
+    border-right: none;
+    border-bottom: 1px solid var(--md-divider);
+    padding-right: 0;
+    padding-bottom: 10px;
+  }
+
+  .md-grand-total-value {
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  .md-breakdown-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .md-breakdown-item {
+    padding: 8px 10px;
+  }
+
+  .md-breakdown-amount {
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  .md-breakdown-count {
+    font-size: 11px;
+  }
+
+  .md-compare-bar {
+    padding: 10px 14px;
+    gap: 6px;
+  }
+
+  .md-compare-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: 4px 12px;
+  }
+
+  .md-compare-badge {
+    font-size: 12px;
+  }
+
+  .md-cross-compare-bar {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .md-postal-tips-strip {
+    padding: 8px 14px;
+  }
+
+  .md-postal-tip-row {
+    font-size: 11.5px;
+  }
+
+  /* Compact Controls & Horizontal Scrollable Popular Chips on Mobile */
+  .md-controls-card {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .md-controls-top-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .md-helper-text {
+    padding-left: 0;
+    font-size: 11px;
+  }
+
+  .md-options-group {
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 2px;
+  }
+
+  .md-segment-btn {
+    height: 32px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .md-chips-toggle-btn {
+    display: inline-flex;
+  }
+
+  /* When collapsed on mobile: 1-line horizontal swipeable ribbon (zero vertical bloat!) */
+  .md-chips-list.is-mobile-collapsed {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .md-chips-list.is-mobile-collapsed::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Table Toolbar on Mobile */
+  .md-table-toolbar {
+    padding: 10px 14px;
+    min-height: 48px;
+  }
+
+  .md-table-title {
+    font-size: 16px;
+  }
+
+  .md-rate-tag {
+    font-size: 11px;
+  }
+
+  .md-table-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .md-table-actions .md-btn {
+    height: 32px;
+    padding: 0 6px;
+    font-size: 11.5px;
+    min-width: 0;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .md-table-actions .md-btn .material-icons {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Replace Wide Desktop Table Rows with Ultra-Compact Mobile Cards */
+  .md-data-table.mobile-cards-table thead {
+    display: none;
+  }
+
+  .md-data-table.mobile-cards-table,
+  .md-data-table.mobile-cards-table tbody,
+  .md-data-table.mobile-cards-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .md-data-table.mobile-cards-table td.desktop-only-cell {
+    display: none !important;
+  }
+
+  .md-data-table.mobile-cards-table td.mobile-card-cell {
+    display: block !important;
+    padding: 12px 14px !important;
+    border-bottom: 1px solid var(--md-divider);
+  }
+
+  .mobile-compact-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mcc-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .mcc-dest {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .mcc-flag {
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .mcc-title-group {
+    min-width: 0;
+  }
+
+  .mcc-name-line {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .mcc-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--md-text-primary);
+  }
+
+  .mcc-Zone {
+    font-size: 11px;
+    color: var(--md-text-secondary);
+  }
+
+  .mcc-subtotal-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .mcc-subtotal-text {
+    text-align: right;
+  }
+
+  .mcc-subtotal-val {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--md-primary-text);
+    line-height: 20px;
+  }
+
+  .mcc-subtotal-formula {
+    font-size: 10px;
+    color: var(--md-text-secondary);
+  }
+
+  /* 3-Column Side-by-Side Stepper Grid on Mobile */
+  .mcc-controls-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .mcc-control-box {
+    background-color: var(--md-bg-subtle);
+    border: 1px solid var(--md-divider);
+    border-radius: 2px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mcc-control-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--md-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 2px;
+  }
+
+  .mcc-control-rate {
+    font-size: 10px;
+    color: var(--md-text-hint);
+    font-weight: 400;
+  }
+
+  .mcc-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 30px;
+    background: var(--md-bg-surface);
+    border: 1px solid var(--md-divider);
+    border-radius: 2px;
+  }
+
+  .mcc-step-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: var(--md-text-primary);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mcc-step-btn:disabled {
+    color: var(--md-text-disabled);
+  }
+
+  .mcc-step-val {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--md-text-primary);
+  }
+
+  /* Bottom Micro Reference & Total Quick Bar inside Mobile Card */
+  .mcc-bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 2px;
+    font-size: 11px;
+    color: var(--md-text-secondary);
+  }
+
+  .mcc-total-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--md-badge-bg);
+    color: var(--md-badge-text);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .mcc-quick-refs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .mcc-ref-chip {
+    border: 1px solid var(--md-divider);
+    background: var(--md-bg-subtle);
+    border-radius: 2px;
+    padding: 1px 6px;
+    font-size: 11px;
+    color: var(--md-text-secondary);
+    cursor: pointer;
+  }
+
+  .mcc-ref-chip strong {
+    color: var(--md-text-primary);
+  }
+
+  /* Official Rate Schedule Mobile Cards (Replaces wide 7-column table) */
+  .md-desktop-rate-table {
+    display: none;
+  }
+
+  .md-mobile-rate-cards {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  .m-rate-card {
+    border: 1px solid var(--md-divider);
+    border-radius: 2px;
+    padding: 10px 12px;
+    background-color: var(--md-bg-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .m-rate-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .m-rate-zone-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--md-primary-text);
+  }
+
+  .m-rate-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+  }
+
+  .m-rate-badge {
+    background: var(--md-bg-surface);
+    border: 1px solid var(--md-divider);
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+
+  .m-rate-scope {
+    font-size: 11px;
+    color: var(--md-text-secondary);
+    line-height: 1.4;
+  }
+
+  .md-reference-footer {
+    padding: 12px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  /* Mobile & Small-Screen Dialog Optimization */
+  .md-dialog-backdrop {
+    padding: 10px;
+  }
+
+  .md-dialog,
+  .md-dialog.md-dialog-wide {
+    max-width: 100%;
+    max-height: calc(100dvh - 20px);
+  }
+
+  .md-dialog-header {
+    padding: 12px 14px 10px 16px;
+  }
+
+  .md-dialog-title {
+    font-size: 16px;
+  }
+
+  .md-dialog-content {
+    padding: 12px 14px 16px;
+    gap: 6px;
+  }
+
+  .md-scheme-selector-grid {
+    gap: 6px;
+  }
+
+  .md-scheme-btn {
+    min-height: 34px;
+    padding: 6px 4px;
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .md-scheme-btn.is-selected {
+    padding: 5px 3px;
+  }
+
+  .md-scheme-btn .material-icons {
+    font-size: 15px;
+  }
+
+  .md-postal-themes-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .md-option-card {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .md-option-card.is-selected {
+    padding: 7px 9px;
+  }
+
+  .md-option-title {
+    font-size: 13.5px;
+  }
+
+  .md-option-desc {
+    font-size: 11px;
+  }
+
+  .md-palette-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .md-palette-swatch-btn {
+    padding: 7px 6px;
+    gap: 6px;
+  }
+
+  .md-palette-swatch-btn.is-selected {
+    padding: 6px 5px;
+  }
+
+  .md-palette-dot {
+    width: 20px;
+    height: 20px;
+  }
+
+  .md-palette-dot-accent {
+    width: 8px;
+    height: 8px;
+    right: -1px;
+    bottom: -1px;
+    border-width: 1.5px;
+  }
+
+  .md-palette-name {
+    font-size: 11.5px;
+  }
+
+  .stamp-topup-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  /* Sticky Bottom Summary Bar on Mobile */
+  .md-mobile-bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 56px;
+    background-color: var(--md-bg-surface);
+    border-top: 2px solid var(--md-primary-500);
+    box-shadow: var(--md-shadow-8dp);
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 90;
+    transform: translateY(100%);
+    transition: transform 0.25s var(--md-curve-standard);
+  }
+
+  .md-mobile-bottom-bar.is-visible {
+    transform: translateY(0);
+  }
+
+  .md-mobile-bar-left {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .md-mobile-bar-label {
+    font-size: 10px;
+    color: var(--md-text-secondary);
+    text-transform: uppercase;
+  }
+
+  .md-mobile-bar-amount {
+    font-size: 18px;
+    color: var(--md-primary-text);
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .md-mobile-bar-meta {
+    font-size: 12px;
+    color: var(--md-text-secondary);
+    font-weight: 400;
+  }
+
+  .md-snackbar {
+    left: 12px;
+    right: 12px;
+    bottom: 68px;
+    min-width: 0;
+    transform: translate(0, 120px);
+  }
+
+  .md-snackbar.is-visible {
+    transform: translate(0, 0);
+  }
+}
+
+/* Extra-Small Screen Adaptation (<= 360px, e.g. iPhone SE / Small Android) */
+@media (max-width: 360px) {
+  .md-palette-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md-scheme-btn {
+    font-size: 11.5px;
+    gap: 3px;
+    padding: 6px 2px;
+  }
+
+  .md-scheme-btn .material-icons {
+    font-size: 14px;
+  }
+}
