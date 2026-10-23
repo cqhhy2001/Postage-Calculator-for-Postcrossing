@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://qamoe.cyou/Postage-Calculator-for-Postcrossing/sitemap.xml

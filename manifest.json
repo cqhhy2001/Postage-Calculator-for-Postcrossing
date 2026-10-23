@@ -1,7 +1,8 @@
 {
-  "name": "明信片郵資計算器 · 香港郵政 & 中國郵政",
-  "short_name": "郵資計算器",
-  "description": "Postcrossing 多目的地平郵、空郵、掛號資費速算與湊票助手（支援香港郵政 HK$ 及中國郵政 RMB¥）",
+  "name": "Postage Calculator for Postcrossing (Hongkong Post & China Post)",
+  "short_name": "Postage Calc",
+  "description": "Batch postcard postage calculator and stamp combinator for Postcrossing enthusiasts supporting Hongkong Post (HK$) and China Post (RMB ¥).",
+  "categories": ["utilities", "productivity", "finance", "travel"],
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -22,4 +23,3 @@
     }
   ]
 }
-

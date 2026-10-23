@@ -1,0 +1,39 @@
+{
+  "name": "postage-calculator-for-postcrossing",
+  "version": "2.0.0",
+  "description": "Batch postcard postage calculator and stamp combinator for Postcrossing enthusiasts supporting Hongkong Post (2026 HK$ tariffs) and China Post (RMB ¥) in Material Design 1.0.",
+  "homepage": "https://qamoe.cyou/Postage-Calculator-for-Postcrossing/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cqhhy2001/Postage-Calculator-for-Postcrossing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cqhhy2001/Postage-Calculator-for-Postcrossing/issues"
+  },
+  "license": "MIT",
+  "author": "cqhhy2001",
+  "keywords": [
+    "postcrossing",
+    "postage-calculator",
+    "postcard",
+    "hongkong-post",
+    "china-post",
+    "stamp-calculator",
+    "stamp-combinator",
+    "philately",
+    "postal-rates",
+    "postal-zones",
+    "air-mail",
+    "surface-mail",
+    "registered-mail",
+    "material-design",
+    "material-design-1",
+    "pwa",
+    "offline-first",
+    "snail-mail",
+    "postcards"
+  ],
+  "scripts": {
+    "start": "npx serve ."
+  }
+}

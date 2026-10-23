@@ -2,11 +2,11 @@ name: Deploy static content to Pages
 
 on:
   push:
-    branches: ["master"]
+    branches: ["master", "gh-pages"]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -15,7 +15,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  sync-gh-pages:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync master to gh-pages branch
+        run: git push origin HEAD:refs/heads/gh-pages --force
+
   deploy:
+    if: github.ref == 'refs/heads/gh-pages'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

@@ -1,19 +1,24 @@
 # Postage Calculator for Postcrossing
 
-[![GitHub Pages](https://img.shields.io/badge/Live_Demo-GitHub_Pages-C62828?style=flat-square&logo=github)](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
-[![Material Design 1](https://img.shields.io/badge/Design-Material_Design_1.0-1976D2?style=flat-square&logo=materialdesign)](https://m1.material.io/)
-[![PWA Ready](https://img.shields.io/badge/PWA-Offline_Ready-00693E?style=flat-square)](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-qamoe.cyou-C62828?style=flat-square&logo=googlechrome&logoColor=white)](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
+[![Postcrossing](https://img.shields.io/badge/Postcrossing-Postcard_Tool-1976D2?style=flat-square)](https://www.postcrossing.com/)
+[![Hongkong Post](https://img.shields.io/badge/Hongkong_Post-2026_Tariffs_(HK%24)-C62828?style=flat-square)](#tariff-summary)
+[![China Post](https://img.shields.io/badge/China_Post-Official_Tariffs_(RMB_¥)-00693E?style=flat-square)](#tariff-summary)
+[![Material Design 1](https://img.shields.io/badge/Design-Material_Design_1.0-00796B?style=flat-square&logo=materialdesign)](https://m1.material.io/)
+[![PWA Offline](https://img.shields.io/badge/PWA-Offline_Ready-FFA000?style=flat-square)](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-546E7A?style=flat-square)](https://opensource.org/licenses/MIT)
 
-A fast, offline-capable web application for calculating postcard postage rates across multiple destinations simultaneously. Built specifically for **Postcrossing** enthusiasts sending postcards via **Hongkong Post** (`HK$`) or **China Post** (`RMB ¥`), crafted in strict adherence to the **Google Material Design 1.0 (2014)** specification.
+> **Batch Postcard Postage Calculator & Stamp Combinator for Postcrossing Enthusiasts**  
+> Calculate multi-destination postcard rates (`Surface Mail`, `SAL`, `Air Mail`, and `Registered Mail`), parse batch Postcrossing IDs (`DE-1234567 US-8901234`), and generate optimal stamp combinations for **Hongkong Post (`HK$`, effective 13 April 2026)** and **China Post (`RMB ¥`)**. Built with zero dependencies in strict adherence to the **Google Material Design 1.0 (2014)** specification.
 
-🔗 **Live Demo:** [https://qamoe.cyou/Postage-Calculator-for-Postcrossing/](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
+🔗 **Live Application:** [https://qamoe.cyou/Postage-Calculator-for-Postcrossing/](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
 
 ---
 
 ## Key Features
 
 ### 1. Dual Postal Operator Master Switch (`Hongkong Post` & `China Post`)
-- **Hongkong Post (`HK$`)**: Full 2026 tariff dataset effective **13 April 2026**, covering over 240 global destinations mapped to accurate Surface Mail and Air Mail postal zones (`Local`, `Chinese Mainland / Macao / Taiwan`, `Zone 1`, `Zone 2`, and `Zone 3`), including destination-specific service availability (such as Surface Mail or Air Mail suspensions).
+- **Hongkong Post (`HK$`)**: Complete 2026 tariff dataset effective **13 April 2026**, covering over 240 global destinations mapped to accurate Surface Mail and Air Mail postal zones (`Local`, `Chinese Mainland / Macao / Taiwan`, `Zone 1`, `Zone 2`, and `Zone 3`), including destination-specific service availability (such as Surface Mail or Air Mail suspensions).
 - **China Post (`RMB ¥`)**: Official international and regional postcard tariffs covering **Domestic**, **Hong Kong / Macao / Taiwan**, and **International** destinations across **Surface Mail**, **Surface Air Lifted (SAL)**, and **Air Mail**, plus Registered Mail fees.
 - **Adaptive Postal Theme**: Switching operators in the default palette automatically transitions between **Pillar Box Crimson** (Hongkong Post `#C62828`) and **China Post Green** (`#00693E`).
 
@@ -83,12 +88,15 @@ A fast, offline-capable web application for calculating postcard postage rates a
 
 ```text
 .
-├── index.html      # App shell, dialogs, toolbar, and responsive Material Design 1 layout
+├── index.html      # App shell, SEO/OpenGraph metadata, dialogs, and Material Design 1 layout
 ├── styles.css      # Material Design 1 elevation, typography, ripple, dark mode, and mobile rules
 ├── data.js         # 240+ destinations dataset, tariff tables, stamp denominations, and i18n strings
 ├── app.js          # Calculator engine, Postcrossing ID parser, stamp combinator, undo stack, and URL state
 ├── manifest.json   # Progressive Web App (PWA) manifest
 ├── sw.js           # Offline-first Service Worker
+├── package.json    # Project metadata and search keywords
+├── robots.txt      # Search engine crawler directives
+├── sitemap.xml     # XML sitemap for search indexing
 └── README.md       # Documentation
 ```
 
@@ -106,6 +114,12 @@ No build tools, bundlers, or external dependencies are required.
    ```bash
    npx serve .
    ```
+
+---
+
+## Topics & Search Keywords
+
+`postcrossing` · `postage-calculator` · `postcard` · `hongkong-post` · `china-post` · `stamp-calculator` · `stamp-combinator` · `philately` · `postal-rates` · `snail-mail` · `air-mail` · `surface-mail` · `registered-mail` · `material-design` · `pwa`
 
 ---
 
