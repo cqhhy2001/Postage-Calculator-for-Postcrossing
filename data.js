@@ -830,7 +830,8 @@ window.HKPOST_I18N = {
     crossCompareLabelToCN: '同批若改由 🇨🇳 中国邮政交寄：',
     crossCompareLabelToHK: '同批若改由 🇭🇰 香港邮政交寄：',
     crossCompareApprox: '约合',
-    crossCompareSwitchBtn: '一键切换'
+    crossCompareSwitchBtn: '一键切换',
+    githubFooterLabel: 'GitHub 开源仓库'
   },
   'zh-HK': {
     appTitle: '香港郵政 · 明信片郵資計算器',
@@ -997,7 +998,8 @@ window.HKPOST_I18N = {
     crossCompareLabelToCN: '同批若改由 🇨🇳 中國郵政交寄：',
     crossCompareLabelToHK: '同批若改由 🇭🇰 香港郵政交寄：',
     crossCompareApprox: '約合',
-    crossCompareSwitchBtn: '一鍵切換'
+    crossCompareSwitchBtn: '一鍵切換',
+    githubFooterLabel: 'GitHub 開源倉庫'
   },
   'en': {
     appTitle: 'Hongkong Post · Postcard Postage Calculator',
@@ -1164,6 +1166,7 @@ window.HKPOST_I18N = {
     crossCompareLabelToCN: 'Same batch via 🇨🇳 China Post:',
     crossCompareLabelToHK: 'Same batch via 🇭🇰 Hongkong Post:',
     crossCompareApprox: 'approx.',
-    crossCompareSwitchBtn: 'Switch'
+    crossCompareSwitchBtn: 'Switch',
+    githubFooterLabel: 'Open Source on GitHub'
   }
 };

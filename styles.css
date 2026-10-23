@@ -2196,16 +2196,118 @@ html.is-theme-transitioning::view-transition-new(root) {
 }
 
 /* ==========================================================================
+   Minimalist Material Design 1.0 Page Footer (GitHub Repository Link)
+   ========================================================================== */
+.md-page-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0 12px;
+}
+
+.md-github-footer-link {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 2px;
+  border: 1px solid var(--md-divider);
+  background-color: var(--md-bg-surface);
+  color: var(--md-text-secondary);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 18px;
+  text-decoration: none;
+  box-shadow: var(--md-shadow-1dp);
+  transition:
+    color 0.2s var(--md-curve-standard),
+    background-color 0.2s var(--md-curve-standard),
+    border-color 0.2s var(--md-curve-standard),
+    box-shadow 0.2s var(--md-curve-standard),
+    transform 0.2s var(--md-curve-standard);
+}
+
+.md-github-footer-link:hover {
+  color: var(--md-primary-text);
+  border-color: var(--md-primary-500);
+  background-color: var(--md-hover-overlay);
+  box-shadow: var(--md-shadow-2dp);
+  transform: translateY(-1px);
+}
+
+.md-github-icon {
+  flex-shrink: 0;
+  opacity: 0.86;
+  transition: opacity 0.2s var(--md-curve-standard), transform 0.2s var(--md-curve-standard);
+}
+
+.md-github-footer-link:hover .md-github-icon {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+.md-github-footer-label {
+  color: var(--md-text-primary);
+  font-weight: 500;
+}
+
+.md-github-footer-divider {
+  color: var(--md-text-hint);
+  user-select: none;
+}
+
+.md-github-footer-repo {
+  color: var(--md-text-secondary);
+  font-family: var(--md-font-sans);
+}
+
+.md-github-footer-link:hover .md-github-footer-repo {
+  color: var(--md-primary-text);
+}
+
+.md-github-footer-ext {
+  font-size: 14px !important;
+  color: var(--md-text-hint);
+  transition: color 0.2s var(--md-curve-standard), transform 0.2s var(--md-curve-standard);
+}
+
+.md-github-footer-link:hover .md-github-footer-ext {
+  color: var(--md-primary-text);
+  transform: translate(1px, -1px);
+}
+
+/* ==========================================================================
    Responsive Mobile Adaptation & High-QoL Compact Layout (< 880px)
    ========================================================================== */
 @media (max-width: 880px) {
   .md-app-bar-row {
-    height: 56px;
-    padding: 0 12px;
+    height: auto;
+    min-height: 52px;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .md-app-bar-title-group {
+    gap: 10px;
+  }
+
+  .md-app-bar-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .md-app-bar-icon .material-icons {
+    font-size: 20px;
   }
 
   .md-app-bar-title {
-    font-size: 17px;
+    font-size: 16.5px;
+    line-height: 1.28;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
   }
 
   .md-app-bar-subtitle {
@@ -2217,7 +2319,8 @@ html.is-theme-transitioning::view-transition-new(root) {
   }
 
   .md-toolbar-btn {
-    padding: 0 10px;
+    padding: 0 9px;
+    height: 34px;
   }
 
   .md-operator-btn {
@@ -2227,13 +2330,92 @@ html.is-theme-transitioning::view-transition-new(root) {
   }
 }
 
-@media (max-width: 480px) {
-  .md-operator-btn .op-text {
-    display: none;
+@media (max-width: 680px) {
+  .md-app-bar-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "title theme lang"
+      "opswitch opswitch opswitch";
+    align-items: center;
+    padding: 8px 12px 10px;
+    gap: 8px 4px;
   }
+
+  .md-app-bar-title-group {
+    grid-area: title;
+    gap: 10px;
+  }
+
+  .md-app-bar-title {
+    font-size: 16px;
+    line-height: 1.25;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-break: break-word;
+  }
+
+  .md-app-bar-actions {
+    display: contents;
+  }
+
+  #btnOpenThemeDialog {
+    grid-area: theme;
+  }
+
+  #btnOpenLangDialog {
+    grid-area: lang;
+  }
+
+  .md-operator-switch {
+    grid-area: opswitch;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 2px;
+  }
+
   .md-operator-btn {
-    padding: 0 7px;
-    font-size: 15px;
+    width: 100%;
+    justify-content: center;
+    height: 30px;
+    font-size: 12.5px;
+    padding: 0 10px;
+  }
+
+  .md-operator-btn .op-text {
+    display: inline;
+  }
+
+  .md-reference-header {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .md-reference-title {
+    font-size: 14.5px;
+    line-height: 1.35;
+    align-items: flex-start;
+  }
+
+  .md-reference-title .material-icons {
+    font-size: 19px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .md-github-footer-link {
+    padding: 6px 12px;
+    font-size: 12px;
+    gap: 6px;
+    max-width: 100%;
+  }
+
+  .md-github-footer-repo {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
