@@ -87,7 +87,8 @@
     defaultMode: 'air',     // 'air' | 'surface'
     weightTier: '20g',      // '20g' | '30g' (for Hongkong Post)
     cnSurfaceMode: 'surface', // 'surface' | 'sal' (for China Post international non-air)
-    selectedOldStamp: 3.7,  // Default HK Post old stamp face value for top-up calculator
+    stampStrategy: 'primary', // 'primary' (1-stamp / exact) | 'secondary' (common combo / 1.20+0.80)
+    selectedOldStamps: [{ val: 3.7, qty: 1 }], // Multi-select HK Post old stamps [{ val, qty }]
     items: [],              // Array of { code, airQty, surfaceQty, regQty }
     importedPcIds: [],      // Array of normalized Postcrossing IDs kept in input box (e.g. ['DE-123456', 'US-654321'])
     undoStack: [],          // History stack for Undo (stores { items, importedPcIds, inputVal })
@@ -1508,7 +1509,7 @@
 
     const airShortLabel = dict.modeAir.split(' ')[0];
     const surfaceShortLabel = (isCN && state.cnSurfaceMode === 'sal') ? 'SAL' : dict.modeSurface.split(' ')[0];
-    const regShortLabel = dict.colRegQty.split(' ')[0];
+    const regShortLabel = state.lang === 'en' ? 'Reg.' : dict.colRegQty.split(' ')[0];
 
     if (state.items.length === 0) {
       if (tbody) tbody.innerHTML = '';
@@ -1603,9 +1604,9 @@
             <td class="td-center desktop-only-cell">
               <div class="stepper-group">
                 <div class="stepper-box is-highlighted">
-                  <button type="button" class="stepper-btn" data-step-code="${dest.code}" data-step-field="total" data-step-delta="-1" ${rowTotalCards <= 0 ? 'disabled' : ''} aria-label="Decrease total">−</button>
+                  <button type="button" class="stepper-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="total" data-step-delta="-1" ${rowTotalCards <= 0 ? 'disabled' : ''} aria-label="Decrease total">−</button>
                   <input type="number" min="0" max="999" class="stepper-input" value="${rowTotalCards}" data-input-code="${dest.code}" data-input-field="total" aria-label="Total postcards">
-                  <button type="button" class="stepper-btn" data-step-code="${dest.code}" data-step-field="total" data-step-delta="1" aria-label="Increase total">+</button>
+                  <button type="button" class="stepper-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="total" data-step-delta="1" aria-label="Increase total">+</button>
                 </div>
                 <span class="unit-rate-tag">${dict.unitCard}</span>
               </div>
@@ -1615,9 +1616,9 @@
               ${canAir ? `
                 <div class="stepper-group">
                   <div class="stepper-box">
-                    <button type="button" class="stepper-btn" data-step-code="${dest.code}" data-step-field="air" data-step-delta="-1" ${item.airQty <= 0 ? 'disabled' : ''} aria-label="Decrease air mail">−</button>
+                    <button type="button" class="stepper-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="air" data-step-delta="-1" ${item.airQty <= 0 ? 'disabled' : ''} aria-label="Decrease air mail">−</button>
                     <input type="number" min="0" max="999" class="stepper-input" value="${item.airQty}" data-input-code="${dest.code}" data-input-field="air" aria-label="Air mail postcards">
-                    <button type="button" class="stepper-btn" data-step-code="${dest.code}" data-step-field="air" data-step-delta="1" aria-label="Increase air mail">+</button>
+                    <button type="button" class="stepper-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="air" data-step-delta="1" aria-label="Increase air mail">+</button>
                   </div>
                   <span class="unit-rate-tag">${cSym} ${fmtHKD(airRate)}${dict.perCard}</span>
                 </div>
@@ -1634,9 +1635,9 @@
             <td class="td-center desktop-only-cell">
               <div class="stepper-group">
                 <div class="stepper-box">
-                  <button type="button" class="stepper-btn" data-step-code="${dest.code}" data-step-field="surface" data-step-delta="-1" ${item.surfaceQty <= 0 ? 'disabled' : ''} aria-label="Decrease surface mail">−</button>
+                  <button type="button" class="stepper-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="surface" data-step-delta="-1" ${item.surfaceQty <= 0 ? 'disabled' : ''} aria-label="Decrease surface mail">−</button>
                   <input type="number" min="0" max="999" class="stepper-input" value="${item.surfaceQty}" data-input-code="${dest.code}" data-input-field="surface" aria-label="Surface mail postcards">
-                  <button type="button" class="stepper-btn" data-step-code="${dest.code}" data-step-field="surface" data-step-delta="1" aria-label="Increase surface mail">+</button>
+                  <button type="button" class="stepper-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="surface" data-step-delta="1" aria-label="Increase surface mail">+</button>
                 </div>
                 <span class="unit-rate-tag">${cSym} ${fmtHKD(surfaceRate)}${dict.perCard}</span>
               </div>
@@ -1645,9 +1646,9 @@
             <td class="td-center desktop-only-cell">
               <div class="stepper-group">
                 <div class="stepper-box">
-                  <button type="button" class="stepper-btn" data-step-code="${dest.code}" data-step-field="reg" data-step-delta="-1" ${item.regQty <= 0 ? 'disabled' : ''} aria-label="Decrease registered">−</button>
+                  <button type="button" class="stepper-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="reg" data-step-delta="-1" ${item.regQty <= 0 ? 'disabled' : ''} aria-label="Decrease registered">−</button>
                   <input type="number" min="0" max="${rowTotalCards}" class="stepper-input" value="${item.regQty}" data-input-code="${dest.code}" data-input-field="reg" aria-label="Registered items">
-                  <button type="button" class="stepper-btn" data-step-code="${dest.code}" data-step-field="reg" data-step-delta="1" ${item.regQty >= rowTotalCards ? 'disabled' : ''} aria-label="Increase registered">+</button>
+                  <button type="button" class="stepper-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="reg" data-step-delta="1" ${item.regQty >= rowTotalCards ? 'disabled' : ''} aria-label="Increase registered">+</button>
                 </div>
                 <span class="unit-rate-tag">+${cSym} ${fmtHKD(regRate)}${dict.perItem}</span>
               </div>
@@ -1655,15 +1656,15 @@
 
             <td class="desktop-only-cell">
               <div class="row-compare-list">
-                <div class="row-compare-line ${canAir ? 'is-clickable' : ''}" ${canAir ? `data-quick-switch="${dest.code}" data-switch-mode="switch_all_air" title="${dict.quickSwitchTip}"` : ''}>
+                <div class="row-compare-line ${canAir ? 'is-clickable md-ripple-surface' : ''}" ${canAir ? `data-quick-switch="${dest.code}" data-switch-mode="switch_all_air" title="${dict.quickSwitchTip}"` : ''}>
                   <span>${dict.refAllAir}:</span>
                   <strong>${canAir ? `${cSym} ${fmtHKD(rowTotalCards * airRate)}` : '—'}</strong>
                 </div>
-                <div class="row-compare-line is-clickable" data-quick-switch="${dest.code}" data-switch-mode="switch_all_surface" title="${dict.quickSwitchTip}">
+                <div class="row-compare-line is-clickable md-ripple-surface" data-quick-switch="${dest.code}" data-switch-mode="switch_all_surface" title="${dict.quickSwitchTip}">
                   <span>${dict.refAllSurface}:</span>
                   <strong>${cSym} ${fmtHKD(refSurfaceForThisRow)}</strong>
                 </div>
-                <div class="row-compare-line is-clickable" data-quick-switch="${dest.code}" data-switch-mode="toggle_all_reg" title="${dict.quickSwitchTip}">
+                <div class="row-compare-line is-clickable md-ripple-surface" data-quick-switch="${dest.code}" data-switch-mode="toggle_all_reg" title="${dict.quickSwitchTip}">
                   <span>${dict.refAllReg}:</span>
                   <strong>+${cSym} ${fmtHKD(refRegForThisRow)}</strong>
                 </div>
@@ -1718,9 +1719,9 @@
                     </div>
                     ${canAir ? `
                       <div class="mcc-stepper">
-                        <button type="button" class="mcc-step-btn" data-step-code="${dest.code}" data-step-field="air" data-step-delta="-1" ${item.airQty <= 0 ? 'disabled' : ''}>−</button>
+                        <button type="button" class="mcc-step-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="air" data-step-delta="-1" ${item.airQty <= 0 ? 'disabled' : ''}>−</button>
                         <span class="mcc-step-val">${item.airQty}</span>
-                        <button type="button" class="mcc-step-btn" data-step-code="${dest.code}" data-step-field="air" data-step-delta="1">+</button>
+                        <button type="button" class="mcc-step-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="air" data-step-delta="1">+</button>
                       </div>
                     ` : `
                       <span class="no-air-badge" style="font-size:11px;padding:3px 6px;">${noAirBadgeLabel}</span>
@@ -1734,9 +1735,9 @@
                       <span class="mcc-control-rate">${cShort}${fmtHKD(surfaceRate)}</span>
                     </div>
                     <div class="mcc-stepper">
-                      <button type="button" class="mcc-step-btn" data-step-code="${dest.code}" data-step-field="surface" data-step-delta="-1" ${item.surfaceQty <= 0 ? 'disabled' : ''}>−</button>
+                      <button type="button" class="mcc-step-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="surface" data-step-delta="-1" ${item.surfaceQty <= 0 ? 'disabled' : ''}>−</button>
                       <span class="mcc-step-val">${item.surfaceQty}</span>
-                      <button type="button" class="mcc-step-btn" data-step-code="${dest.code}" data-step-field="surface" data-step-delta="1">+</button>
+                      <button type="button" class="mcc-step-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="surface" data-step-delta="1">+</button>
                     </div>
                   </div>
 
@@ -1747,9 +1748,9 @@
                       <span class="mcc-control-rate">+${cShort}${fmtHKD(regRate)}</span>
                     </div>
                     <div class="mcc-stepper">
-                      <button type="button" class="mcc-step-btn" data-step-code="${dest.code}" data-step-field="reg" data-step-delta="-1" ${item.regQty <= 0 ? 'disabled' : ''}>−</button>
+                      <button type="button" class="mcc-step-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="reg" data-step-delta="-1" ${item.regQty <= 0 ? 'disabled' : ''}>−</button>
                       <span class="mcc-step-val">${item.regQty}</span>
-                      <button type="button" class="mcc-step-btn" data-step-code="${dest.code}" data-step-field="reg" data-step-delta="1" ${item.regQty >= rowTotalCards ? 'disabled' : ''}>+</button>
+                      <button type="button" class="mcc-step-btn md-ripple-surface" data-step-code="${dest.code}" data-step-field="reg" data-step-delta="1" ${item.regQty >= rowTotalCards ? 'disabled' : ''}>+</button>
                     </div>
                   </div>
                 </div>
@@ -1761,14 +1762,14 @@
                   </span>
                   <div class="mcc-quick-refs">
                     ${canAir ? `
-                      <button type="button" class="mcc-ref-chip" data-quick-switch="${dest.code}" data-switch-mode="switch_all_air">
+                      <button type="button" class="mcc-ref-chip md-ripple-surface" data-quick-switch="${dest.code}" data-switch-mode="switch_all_air">
                         ${dict.refAllAir} <strong>${cShort}${fmtHKD(rowTotalCards * airRate)}</strong>
                       </button>
                     ` : ''}
-                    <button type="button" class="mcc-ref-chip" data-quick-switch="${dest.code}" data-switch-mode="switch_all_surface">
+                    <button type="button" class="mcc-ref-chip md-ripple-surface" data-quick-switch="${dest.code}" data-switch-mode="switch_all_surface">
                       ${dict.refAllSurface} <strong>${cShort}${fmtHKD(refSurfaceForThisRow)}</strong>
                     </button>
-                    <button type="button" class="mcc-ref-chip" data-quick-switch="${dest.code}" data-switch-mode="toggle_all_reg">
+                    <button type="button" class="mcc-ref-chip md-ripple-surface" data-quick-switch="${dest.code}" data-switch-mode="toggle_all_reg">
                       ${dict.refAllReg} <strong>+${cShort}${fmtHKD(refRegForThisRow)}</strong>
                     </button>
                   </div>
@@ -1781,6 +1782,7 @@
 
       if (tbody) {
         tbody.innerHTML = rowsHtml;
+        replayActiveRippleIfNeeded(tbody);
 
         // Bind stepper buttons
         tbody.querySelectorAll('[data-step-code]').forEach(btn => {
@@ -1956,8 +1958,17 @@
     // Update Mobile Sticky Bottom Bar
     const mobileBarTotal = document.getElementById('mobileBarTotalAmount');
     const mobileBarMeta = document.getElementById('mobileBarMeta');
+    const stampPlan = computeBatchStampPlan();
     if (mobileBarTotal) mobileBarTotal.textContent = fmtHKD(grandTotal);
-    if (mobileBarMeta) mobileBarMeta.textContent = `(${totalCards} ${dict.unitCard})`;
+    if (mobileBarMeta) {
+      const stampCountSuffix = stampPlan.totalPieces > 0
+        ? ` · ${stampPlan.totalPieces} ${dict.unitStamp || dict.inlineStampTotalUnit}`
+        : '';
+      mobileBarMeta.textContent = `(${totalCards} ${dict.unitCard}${stampCountSuffix})`;
+    }
+
+    // Render Inline Stamp Preparation & Denomination Breakdown Panel right in Summary Card
+    renderInlineStampSummary(stampPlan);
   }
 
   /**
@@ -2285,6 +2296,438 @@
   }
 
   /**
+   * Decompose a single postcard's postage rate into concrete stamp denominations & counts
+   * according to the active operator (HK Post vs China Post) and inline strategy ('primary' vs 'secondary')
+   */
+  function decomposeRateIntoStamps(rateVal, isCN, strategy) {
+    const key = Number(rateVal).toFixed(1);
+    const cShort = isCN ? '¥' : '$';
+
+    if (isCN) {
+      // China Post strategies:
+      // 'primary' -> Exact Match (0 overpayment, fewest stamps using 4.2, 3.0, 2.0, 1.5, 1.2, 0.8)
+      // 'secondary' -> Popular ¥1.20 + ¥0.80 (80分) commemorative stamp pairs
+      const cnPrimaryMap = {
+        '0.8': [{ denom: 0.8, count: 1 }],
+        '3.0': [{ denom: 3.0, count: 1 }],
+        '3.5': [{ denom: 1.5, count: 1 }, { denom: 1.2, count: 1 }, { denom: 0.8, count: 1 }],
+        '4.0': [{ denom: 1.2, count: 2 }, { denom: 0.8, count: 2 }],
+        '4.5': [{ denom: 3.0, count: 1 }, { denom: 1.5, count: 1 }],
+        '5.0': [{ denom: 4.2, count: 1 }, { denom: 0.8, count: 1 }]
+      };
+      const cnSecondary12080Map = {
+        '0.8': [{ denom: 0.8, count: 1 }],
+        '3.0': [{ denom: 1.2, count: 2 }, { denom: 0.8, count: 1 }], // 3.2 (+0.2)
+        '3.5': [{ denom: 1.2, count: 1 }, { denom: 0.8, count: 3 }], // 3.6 (+0.1)
+        '4.0': [{ denom: 1.2, count: 2 }, { denom: 0.8, count: 2 }], // 4.0 (0)
+        '4.5': [{ denom: 1.2, count: 2 }, { denom: 0.8, count: 3 }], // 4.8 (+0.3)
+        '5.0': [{ denom: 1.2, count: 3 }, { denom: 0.8, count: 2 }]  // 5.2 (+0.2)
+      };
+
+      const pieces = (strategy === 'secondary' ? cnSecondary12080Map[key] : cnPrimaryMap[key])
+        || [{ denom: Number(rateVal), count: 1 }];
+      const actualPerCard = pieces.reduce((acc, p) => acc + p.denom * p.count, 0);
+      const overpayPerCard = Math.max(0, +(actualPerCard - rateVal).toFixed(2));
+      const formulaText = pieces
+        .map(p => (p.count > 1 ? `${cShort}${p.denom.toFixed(2)}×${p.count}` : `${cShort}${p.denom.toFixed(2)}`))
+        .join(' + ');
+
+      return { pieces, actualPerCard, overpayPerCard, formulaText };
+    }
+
+    // Hongkong Post strategies:
+    // 'primary' -> 2026 Definitive Stamps (1 stamp per card for all standard 20g zones)
+    // 'secondary' -> Common Multi-Stamp Combo ($5.0 / $3.7 / $3.0 / $2.0 + small make-up stamps)
+    const hkDefinitiveSet = new Set(['2.4', '3.0', '3.7', '3.9', '4.2', '4.7', '5.0', '5.3', '5.6', '5.7', '5.8', '10.0']);
+    const hkCommonMap = {
+      '2.4': [{ denom: 2.0, count: 1 }, { denom: 0.2, count: 2 }],
+      '3.0': [{ denom: 3.0, count: 1 }],
+      '3.7': [{ denom: 3.7, count: 1 }],
+      '3.9': [{ denom: 3.7, count: 1 }, { denom: 0.2, count: 1 }],
+      '4.2': [{ denom: 3.7, count: 1 }, { denom: 0.5, count: 1 }],
+      '4.7': [{ denom: 3.7, count: 1 }, { denom: 1.0, count: 1 }],
+      '5.3': [{ denom: 5.0, count: 1 }, { denom: 0.2, count: 1 }, { denom: 0.1, count: 1 }],
+      '5.6': [{ denom: 5.0, count: 1 }, { denom: 0.5, count: 1 }, { denom: 0.1, count: 1 }],
+      '5.7': [{ denom: 5.0, count: 1 }, { denom: 0.5, count: 1 }, { denom: 0.2, count: 1 }],
+      '5.8': [{ denom: 5.0, count: 1 }, { denom: 0.5, count: 1 }, { denom: 0.2, count: 1 }, { denom: 0.1, count: 1 }]
+    };
+
+    let pieces = [];
+    if (strategy === 'primary' && hkDefinitiveSet.has(key)) {
+      pieces = [{ denom: Number(rateVal), count: 1 }];
+    } else if (strategy === 'secondary' && hkCommonMap[key]) {
+      pieces = hkCommonMap[key];
+    } else {
+      // Greedy decomposition using standard HK Post denominations ($10, $5, $2, $1, $0.5, $0.2, $0.1)
+      let tenths = Math.round(rateVal * 10);
+      const denoms = [100, 50, 20, 10, 5, 2, 1];
+      for (const d of denoms) {
+        if (tenths >= d) {
+          const cnt = Math.floor(tenths / d);
+          tenths -= cnt * d;
+          pieces.push({ denom: +(d / 10).toFixed(1), count: cnt });
+        }
+      }
+    }
+
+    const actualPerCard = pieces.reduce((acc, p) => acc + p.denom * p.count, 0);
+    const overpayPerCard = Math.max(0, +(actualPerCard - rateVal).toFixed(2));
+    const formulaText = pieces
+      .map(p => (p.count > 1 ? `${cShort}${p.denom.toFixed(1)}×${p.count}` : `${cShort}${p.denom.toFixed(1)}`))
+      .join(' + ');
+
+    return { pieces, actualPerCard, overpayPerCard, formulaText };
+  }
+
+  /**
+   * Compute aggregated stamp shopping/pulling list and per-tier affixing formulas for the entire batch
+   */
+  function computeBatchStampPlan() {
+    const isCN = state.operator === 'chinapost';
+    const tierMap = new Map();
+
+    state.items.forEach(item => {
+      const dest = DEST_MAP.get(item.code);
+      if (!dest) return;
+      const { airRate, surfaceRate } = getRatesForDestination(dest);
+
+      if (item.airQty > 0 && airRate !== null) {
+        const k = airRate.toFixed(1);
+        if (!tierMap.has(k)) tierMap.set(k, { rate: airRate, cards: 0 });
+        tierMap.get(k).cards += item.airQty;
+      }
+      if (item.surfaceQty > 0) {
+        const k = surfaceRate.toFixed(1);
+        if (!tierMap.has(k)) tierMap.set(k, { rate: surfaceRate, cards: 0 });
+        tierMap.get(k).cards += item.surfaceQty;
+      }
+    });
+
+    const denomTotals = new Map();
+    const tiers = [];
+    let totalPieces = 0;
+    let totalActualFace = 0;
+    let totalOverpay = 0;
+
+    Array.from(tierMap.values())
+      .sort((a, b) => b.rate - a.rate)
+      .forEach(tObj => {
+        const decomp = decomposeRateIntoStamps(tObj.rate, isCN, state.stampStrategy);
+        tiers.push({
+          rate: tObj.rate,
+          cards: tObj.cards,
+          formulaText: decomp.formulaText,
+          actualPerCard: decomp.actualPerCard,
+          overpayPerCard: decomp.overpayPerCard
+        });
+
+        totalActualFace += decomp.actualPerCard * tObj.cards;
+        totalOverpay += decomp.overpayPerCard * tObj.cards;
+
+        decomp.pieces.forEach(p => {
+          const dKey = p.denom.toFixed(2);
+          const addCount = p.count * tObj.cards;
+          totalPieces += addCount;
+          if (!denomTotals.has(dKey)) {
+            denomTotals.set(dKey, { denom: p.denom, count: 0 });
+          }
+          denomTotals.get(dKey).count += addCount;
+        });
+      });
+
+    const sortedDenoms = Array.from(denomTotals.values()).sort((a, b) => b.denom - a.denom);
+
+    return {
+      isCN,
+      totalPieces,
+      totalActualFace: +totalActualFace.toFixed(2),
+      totalOverpay: +totalOverpay.toFixed(2),
+      sortedDenoms,
+      tiers
+    };
+  }
+
+  /**
+   * Render the Always-Visible Inline Stamp Preparation & Denomination Breakdown Panel inside the Summary Card
+   */
+  function renderInlineStampSummary(plan) {
+    const panel = document.getElementById('inlineStampSummarySection');
+    if (!panel) return;
+
+    if (!plan || plan.totalPieces <= 0) {
+      panel.style.display = 'none';
+      panel.innerHTML = '';
+      return;
+    }
+
+    const dict = t();
+    const isCN = plan.isCN;
+    const cSym = curSym();
+    const cShort = curShort();
+
+    const modePrimaryLabel = isCN ? dict.inlineModeCNExact : dict.inlineModeHKDef;
+    const modeSecondaryLabel = isCN ? dict.inlineModeCN12080 : dict.inlineModeHKCombo;
+    const moreBtnLabel = isCN ? dict.inlineMoreTopUpCN : dict.inlineMoreTopUpHK;
+
+    const overpayBadgeHtml = plan.totalOverpay > 0.001
+      ? `<span class="md-stamp-overpay-pill">${dict.inlineOverpayNote} ${cSym} ${fmtHKD(plan.totalActualFace)} (+${cShort}${fmtHKD(plan.totalOverpay)})</span>`
+      : '';
+
+    const ticketsHtml = plan.sortedDenoms.map(d => {
+      const denomStr = isCN ? d.denom.toFixed(2) : d.denom.toFixed(1);
+      const fenHint = (isCN && Math.abs(d.denom - 0.8) < 0.01 && state.lang !== 'en') ? ' (80分)' : '';
+      return `
+        <div class="md-stamp-pull-ticket">
+          <span class="md-stamp-ticket-denom">${cSym} ${denomStr}${fenHint}</span>
+          <span class="md-stamp-ticket-qty">× ${d.count} ${dict.unitStamp}</span>
+        </div>
+      `;
+    }).join('');
+
+    const tiersHtml = plan.tiers.map(tier => {
+      const overNote = tier.overpayPerCard > 0.001
+        ? ` <small>(=${cShort}${tier.actualPerCard.toFixed(1)})</small>`
+        : '';
+      return `
+        <div class="md-stamp-tier-chip">
+          <span class="md-stamp-tier-head">${cSym} ${fmtHKD(tier.rate)}${dict.perCard} × ${tier.cards}${dict.unitCard}</span>
+          <span class="md-stamp-tier-arrow">→</span>
+          <span class="md-stamp-tier-formula">${dict.inlineAffixVerb} <strong>${tier.formulaText}</strong>${overNote}</span>
+        </div>
+      `;
+    }).join('');
+
+    panel.style.display = 'flex';
+    const existingBody = panel.querySelector('#inlineStampBodyArea');
+    const existingBadgeWrap = panel.querySelector('#inlineStampBadgesArea');
+    const existingOperator = panel.getAttribute('data-rendered-op');
+    const existingLang = panel.getAttribute('data-rendered-lang');
+
+    const bodyRowsHtml = `
+      <div class="md-inline-stamp-row">
+        <span class="md-inline-row-label">${dict.inlinePullLabel}</span>
+        <div class="md-stamp-tickets-wrap">
+          ${ticketsHtml}
+        </div>
+      </div>
+      <div class="md-inline-stamp-row">
+        <span class="md-inline-row-label">${dict.inlinePerCardLabel}</span>
+        <div class="md-stamp-tiers-wrap">
+          ${tiersHtml}
+        </div>
+      </div>
+    `;
+
+    // If header is already rendered for the current operator & language, update in-place so active button ripples are never cut off!
+    if (existingBody && existingBadgeWrap && existingOperator === state.operator && existingLang === state.lang) {
+      existingBadgeWrap.innerHTML = `
+        <span class="md-stamp-total-pill">${plan.totalPieces} ${dict.inlineStampTotalUnit}</span>
+        ${overpayBadgeHtml}
+      `;
+      existingBody.innerHTML = bodyRowsHtml;
+      panel.querySelectorAll('[data-stamp-strategy]').forEach(btn => {
+        btn.classList.toggle('is-active', btn.getAttribute('data-stamp-strategy') === state.stampStrategy);
+      });
+      return;
+    }
+
+    panel.setAttribute('data-rendered-op', state.operator);
+    panel.setAttribute('data-rendered-lang', state.lang);
+    panel.innerHTML = `
+      <div class="md-inline-stamp-header">
+        <div class="md-inline-stamp-title-group">
+          <span class="material-icons md-inline-stamp-icon">confirmation_number</span>
+          <span class="md-inline-stamp-title">${dict.inlineStampTitle}</span>
+          <span id="inlineStampBadgesArea" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span class="md-stamp-total-pill">${plan.totalPieces} ${dict.inlineStampTotalUnit}</span>
+            ${overpayBadgeHtml}
+          </span>
+        </div>
+        <div class="md-inline-stamp-controls">
+          <div class="md-inline-strategy-switch" role="group">
+            <button type="button" class="md-strategy-btn md-ripple-surface ${state.stampStrategy === 'primary' ? 'is-active' : ''}" data-stamp-strategy="primary">
+              ${modePrimaryLabel}
+            </button>
+            <button type="button" class="md-strategy-btn md-ripple-surface ${state.stampStrategy === 'secondary' ? 'is-active' : ''}" data-stamp-strategy="secondary">
+              ${modeSecondaryLabel}
+            </button>
+          </div>
+          <button type="button" class="md-inline-topup-btn md-ripple-surface" id="btnInlineOpenStampDialog">
+            <span class="material-icons" style="font-size:15px;">calculate</span>
+            <span>${moreBtnLabel}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="md-inline-stamp-body" id="inlineStampBodyArea">
+        ${bodyRowsHtml}
+      </div>
+    `;
+
+    panel.querySelectorAll('[data-stamp-strategy]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const strat = btn.getAttribute('data-stamp-strategy');
+        if (strat && strat !== state.stampStrategy) {
+          state.stampStrategy = strat;
+          renderDestinationsAndTotals();
+        }
+      });
+    });
+
+    const btnMore = document.getElementById('btnInlineOpenStampDialog');
+    if (btnMore) {
+      btnMore.addEventListener('click', (e) => {
+        renderStampHelperDialog();
+        openDialogWithOrigin(document.getElementById('stampDialogBackdrop'), e.currentTarget);
+      });
+    }
+  }
+
+  /**
+   * Build the HTML for the Multi-Select Old Stamp Tray & 9-Zone Top-Up Grid (HK Post)
+   */
+  function buildHkOldStampTopupDetailsHtml() {
+    const dict = t();
+    const selectedList = state.selectedOldStamps.filter(s => s.qty > 0);
+    const combinedTotal = +selectedList.reduce((acc, s) => acc + s.val * s.qty, 0).toFixed(1);
+
+    let trayHtml = '';
+    if (selectedList.length === 0) {
+      trayHtml = `
+        <div class="stamp-selected-left">
+          <span class="stamp-selected-label">${dict.stampHkSelectedLabel}</span>
+          <span class="stamp-selected-empty">${dict.stampHkSelectedEmpty}</span>
+        </div>
+      `;
+    } else {
+      const pillsHtml = selectedList.map(s => `
+        <button type="button" class="stamp-selected-pill md-ripple-surface" data-remove-old-stamp="${s.val.toFixed(1)}" title="點擊減少 1 枚 / Tap to remove 1">
+          <span>HK$ ${s.val.toFixed(1)}${s.qty > 1 ? ` × ${s.qty}` : ''}</span>
+          <span class="material-icons">close</span>
+        </button>
+      `).join('');
+
+      trayHtml = `
+        <div class="stamp-selected-left">
+          <span class="stamp-selected-label">${dict.stampHkSelectedLabel}</span>
+          ${pillsHtml}
+        </div>
+        <div class="stamp-selected-right">
+          <span class="stamp-selected-total">${dict.stampHkSelectedTotal}: HK$ ${combinedTotal.toFixed(1)}</span>
+          <button type="button" class="stamp-clear-btn md-ripple-surface" id="btnClearOldStamps">
+            <span class="material-icons" style="font-size:14px;">restart_alt</span>
+            <span>${dict.stampHkClearBtn}</span>
+          </button>
+        </div>
+      `;
+    }
+
+    const targetZones = [
+      { label: `${dict.zoneShort.LOCAL} (${dict.modeSurface.split(' ')[0]})`, rate: 2.4 },
+      { label: `${dict.zoneShort.CN_MO_TW} (${dict.modeSurface.split(' ')[0]})`, rate: 3.0 },
+      { label: `${dict.zoneShort.CN_TW} (${dict.modeAir.split(' ')[0]})`, rate: 3.9 },
+      { label: `${dict.zoneShort.Z1} (${dict.modeSurface.split(' ')[0]})`, rate: 3.7 },
+      { label: `${dict.zoneShort.Z1} (${dict.modeAir.split(' ')[0]})`, rate: 4.2 },
+      { label: `${dict.zoneShort.Z2} (${dict.modeSurface.split(' ')[0]})`, rate: 5.3 },
+      { label: `${dict.zoneShort.Z2} (${dict.modeAir.split(' ')[0]})`, rate: 5.7 },
+      { label: `${dict.zoneShort.Z3} (${dict.modeSurface.split(' ')[0]})`, rate: 5.6 },
+      { label: `${dict.zoneShort.Z3} (${dict.modeAir.split(' ')[0]})`, rate: 5.8 }
+    ];
+
+    const topupRowsHtml = targetZones.map(z => {
+      const diff = +(z.rate - combinedTotal).toFixed(1);
+      if (diff <= 0) {
+        const overStr = diff < 0 ? ` (${dict.stampHkOverpaid} $${Math.abs(diff).toFixed(1)})` : '';
+        return `
+          <div class="stamp-topup-item">
+            <div class="stamp-topup-zone">
+              <span>${z.label}</span>
+              <span class="stamp-topup-Zone-rate">HK$ ${z.rate.toFixed(1)}</span>
+            </div>
+            <div class="stamp-topup-Action" style="color:#2E7D32;">✓ ${dict.stampHkExactMatch}${overStr}</div>
+          </div>
+        `;
+      }
+      const makeupStr = getHkMakeUpStamps(diff);
+      return `
+        <div class="stamp-topup-item">
+          <div class="stamp-topup-zone">
+            <span>${z.label}</span>
+            <span class="stamp-topup-Zone-rate">HK$ ${z.rate.toFixed(1)}</span>
+          </div>
+          <div class="stamp-topup-Action">${dict.stampHkNeedTopup} +$${diff.toFixed(1)}</div>
+          <div class="stamp-topup-formula">→ ${makeupStr}</div>
+        </div>
+      `;
+    }).join('');
+
+    return { trayHtml, topupRowsHtml };
+  }
+
+  /**
+   * Update the Multi-Select Old Stamp Chips & Top-Up Grid IN-PLACE (so button ripples play smoothly without DOM destruction)
+   */
+  function updateOldStampTopupInPlace() {
+    const container = document.getElementById('stampHelperContainer');
+    if (!container) return;
+
+    // Update each old-stamp chip's selected state and quantity badge in-place
+    container.querySelectorAll('[data-old-stamp]').forEach(btn => {
+      const val = parseFloat(btn.getAttribute('data-old-stamp'));
+      const entry = state.selectedOldStamps.find(s => Math.abs(s.val - val) < 0.01);
+      const qty = entry ? entry.qty : 0;
+      btn.classList.toggle('is-selected', qty > 0);
+      const badgeEl = btn.querySelector('.stamp-old-chip-qty');
+      if (qty > 0) {
+        if (badgeEl) {
+          badgeEl.textContent = `×${qty}`;
+        } else {
+          const span = document.createElement('span');
+          span.className = 'stamp-old-chip-qty';
+          span.textContent = `×${qty}`;
+          btn.appendChild(span);
+        }
+      } else if (badgeEl) {
+        badgeEl.remove();
+      }
+    });
+
+    const trayEl = document.getElementById('stampSelectedTrayArea');
+    const gridEl = document.getElementById('stampTopupGridArea');
+    if (trayEl && gridEl) {
+      const { trayHtml, topupRowsHtml } = buildHkOldStampTopupDetailsHtml();
+      trayEl.innerHTML = trayHtml;
+      gridEl.innerHTML = topupRowsHtml;
+      bindOldStampTrayEvents(trayEl);
+    }
+  }
+
+  function bindOldStampTrayEvents(trayEl) {
+    if (!trayEl) return;
+    trayEl.querySelectorAll('[data-remove-old-stamp]').forEach(pill => {
+      pill.addEventListener('click', () => {
+        const val = parseFloat(pill.getAttribute('data-remove-old-stamp'));
+        const idx = state.selectedOldStamps.findIndex(s => Math.abs(s.val - val) < 0.01);
+        if (idx !== -1) {
+          state.selectedOldStamps[idx].qty -= 1;
+          if (state.selectedOldStamps[idx].qty <= 0) {
+            state.selectedOldStamps.splice(idx, 1);
+          }
+          updateOldStampTopupInPlace();
+        }
+      });
+    });
+
+    const btnClear = trayEl.querySelector('#btnClearOldStamps');
+    if (btnClear) {
+      btnClear.addEventListener('click', () => {
+        state.selectedOldStamps = [];
+        updateOldStampTopupInPlace();
+      });
+    }
+  }
+
+  /**
    * Point 2: Render Dual-Operator Stamp Combinator & Old Stamp Top-Up Helper Dialog
    */
   function renderStampHelperDialog() {
@@ -2366,61 +2809,29 @@
       `;
     }
 
-    // 2. Operator-Specific Interactive Tool (HK Old Stamp Top-Up Calculator vs CN Full Stamp Reference)
+    // 2. Operator-Specific Interactive Tool (HK Multi-Select Old Stamp Top-Up Calculator vs CN Full Stamp Reference)
     let operatorToolHtml = '';
     if (!isCN) {
-      const oldValues = [2.0, 2.2, 2.6, 2.8, 3.7, 4.0, 4.8, 4.9, 5.0, 5.4, 5.5];
+      const oldValues = [0.1, 0.2, 0.5, 1.0, 1.4, 2.0, 2.2, 2.6, 2.8, 3.0, 3.7, 4.0, 4.8, 4.9, 5.0, 5.4, 5.5];
       const oldChipsHtml = oldValues.map(val => {
-        const active = Math.abs(state.selectedOldStamp - val) < 0.01;
-        return `<button type="button" class="stamp-old-chip md-ripple-surface ${active ? 'is-selected' : ''}" data-old-stamp="${val.toFixed(1)}">HK$ ${val.toFixed(1)}</button>`;
+        const entry = state.selectedOldStamps.find(s => Math.abs(s.val - val) < 0.01);
+        const qty = entry ? entry.qty : 0;
+        const badgeHtml = qty > 0 ? `<span class="stamp-old-chip-qty">×${qty}</span>` : '';
+        return `<button type="button" class="stamp-old-chip md-ripple-surface ${qty > 0 ? 'is-selected' : ''}" data-old-stamp="${val.toFixed(1)}"><span>HK$ ${val.toFixed(1)}</span>${badgeHtml}</button>`;
       }).join('');
 
-      const targetZones = [
-        { label: `${dict.zoneShort.LOCAL} (${dict.modeSurface.split(' ')[0]})`, rate: 2.4 },
-        { label: `${dict.zoneShort.CN_MO_TW} (${dict.modeSurface.split(' ')[0]})`, rate: 3.0 },
-        { label: `${dict.zoneShort.CN_TW} (${dict.modeAir.split(' ')[0]})`, rate: 3.9 },
-        { label: `${dict.zoneShort.Z1} (${dict.modeSurface.split(' ')[0]})`, rate: 3.7 },
-        { label: `${dict.zoneShort.Z1} (${dict.modeAir.split(' ')[0]})`, rate: 4.2 },
-        { label: `${dict.zoneShort.Z2} (${dict.modeSurface.split(' ')[0]})`, rate: 5.3 },
-        { label: `${dict.zoneShort.Z2} (${dict.modeAir.split(' ')[0]})`, rate: 5.7 },
-        { label: `${dict.zoneShort.Z3} (${dict.modeSurface.split(' ')[0]})`, rate: 5.6 },
-        { label: `${dict.zoneShort.Z3} (${dict.modeAir.split(' ')[0]})`, rate: 5.8 }
-      ];
-
-      const topupRowsHtml = targetZones.map(z => {
-        const diff = +(z.rate - state.selectedOldStamp).toFixed(1);
-        if (diff <= 0) {
-          const overStr = diff < 0 ? ` (${dict.stampHkOverpaid} $${Math.abs(diff).toFixed(1)})` : '';
-          return `
-            <div class="stamp-topup-item">
-              <div class="stamp-topup-zone">
-                <span>${z.label}</span>
-                <span class="stamp-topup-Zone-rate">HK$ ${z.rate.toFixed(1)}</span>
-              </div>
-              <div class="stamp-topup-Action" style="color:#2E7D32;">✓ ${dict.stampHkExactMatch}${overStr}</div>
-            </div>
-          `;
-        }
-        const makeupStr = getHkMakeUpStamps(diff);
-        return `
-          <div class="stamp-topup-item">
-            <div class="stamp-topup-zone">
-              <span>${z.label}</span>
-              <span class="stamp-topup-Zone-rate">HK$ ${z.rate.toFixed(1)}</span>
-            </div>
-            <div class="stamp-topup-Action">${dict.stampHkNeedTopup} +$${diff.toFixed(1)}</div>
-            <div class="stamp-topup-formula">→ ${makeupStr}</div>
-          </div>
-        `;
-      }).join('');
+      const { trayHtml, topupRowsHtml } = buildHkOldStampTopupDetailsHtml();
 
       operatorToolHtml = `
         <div class="md-dialog-section-label">${dict.stampHkOldSection}</div>
         <div class="stamp-note-banner">${dict.stampHkDefinitiveNote}</div>
-        <div class="stamp-old-chips">
+        <div class="stamp-old-chips" id="stampOldChipsArea">
           ${oldChipsHtml}
         </div>
-        <div class="stamp-topup-grid">
+        <div class="stamp-selected-bar" id="stampSelectedTrayArea">
+          ${trayHtml}
+        </div>
+        <div class="stamp-topup-grid" id="stampTopupGridArea">
           ${topupRowsHtml}
         </div>
       `;
@@ -2464,10 +2875,20 @@
 
     container.querySelectorAll('[data-old-stamp]').forEach(btn => {
       btn.addEventListener('click', () => {
-        state.selectedOldStamp = parseFloat(btn.getAttribute('data-old-stamp')) || 3.7;
-        renderStampHelperDialog();
+        const val = parseFloat(btn.getAttribute('data-old-stamp'));
+        if (isNaN(val)) return;
+        const existing = state.selectedOldStamps.find(s => Math.abs(s.val - val) < 0.01);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          state.selectedOldStamps.push({ val, qty: 1 });
+          state.selectedOldStamps.sort((a, b) => b.val - a.val);
+        }
+        updateOldStampTopupInPlace();
       });
     });
+
+    bindOldStampTrayEvents(document.getElementById('stampSelectedTrayArea'));
   }
 
   /**
@@ -2544,6 +2965,13 @@
 
     lines.push(`------------------------`);
     lines.push(`${dict.grandTotalLabel}: ${cSym} ${fmtHKD(grandTotal)}`);
+    const stampPlan = computeBatchStampPlan();
+    if (stampPlan && stampPlan.totalPieces > 0) {
+      const denomText = stampPlan.sortedDenoms
+        .map(d => `${cSym} ${isCN ? d.denom.toFixed(2) : d.denom.toFixed(1)} × ${d.count}${dict.unitStamp}`)
+        .join(', ');
+      lines.push(`🎫 ${dict.inlineStampTitle} (${stampPlan.totalPieces} ${dict.inlineStampTotalUnit}): ${denomText}`);
+    }
 
     const textToCopy = lines.join('\n');
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -2562,21 +2990,86 @@
   }
 
   /**
+   * Track active ripple so if a table row or panel re-renders on click, the ink wave continues seamlessly
+   */
+  let activeRippleState = null;
+
+  function getRippleReplaySelector(el) {
+    if (!el) return null;
+    if (el.id) return `#${el.id}`;
+    const stepCode = el.getAttribute('data-step-code');
+    if (stepCode) {
+      const field = el.getAttribute('data-step-field');
+      const delta = el.getAttribute('data-step-delta');
+      const isMobile = el.classList.contains('mcc-step-btn');
+      return `${isMobile ? '.mcc-step-btn' : '.stepper-btn'}[data-step-code="${stepCode}"][data-step-field="${field}"][data-step-delta="${delta}"]`;
+    }
+    const qsCode = el.getAttribute('data-quick-switch');
+    if (qsCode) {
+      const mode = el.getAttribute('data-switch-mode');
+      const isMobile = el.classList.contains('mcc-ref-chip');
+      return `${isMobile ? '.mcc-ref-chip' : '.row-compare-line'}[data-quick-switch="${qsCode}"][data-switch-mode="${mode}"]`;
+    }
+    return null;
+  }
+
+  function replayActiveRippleIfNeeded(rootEl) {
+    if (!activeRippleState || !rootEl) return;
+    const elapsed = performance.now() - activeRippleState.startTime;
+    if (elapsed <= 0 || elapsed >= 480 || !activeRippleState.selector) {
+      return;
+    }
+    const matchedEl = rootEl.querySelector(activeRippleState.selector);
+    if (!matchedEl || matchedEl.disabled || matchedEl.hasAttribute('disabled')) return;
+    if (matchedEl.querySelector('.md-ripple-wave')) return;
+
+    const wave = document.createElement('span');
+    wave.className = 'md-ripple-wave';
+    wave.style.width = `${activeRippleState.diameter}px`;
+    wave.style.height = `${activeRippleState.diameter}px`;
+    wave.style.left = `${activeRippleState.left}px`;
+    wave.style.top = `${activeRippleState.top}px`;
+    wave.style.animationDelay = `-${Math.round(elapsed)}ms`;
+
+    matchedEl.appendChild(wave);
+    wave.addEventListener('animationend', () => {
+      wave.remove();
+    });
+  }
+
+  /**
    * Global MD1 Ink Ripple Effect Listener
    */
   function initMd1Ripple() {
     document.addEventListener('pointerdown', (e) => {
+      if (e.button && e.button !== 0) return;
       const target = e.target.closest('.md-ripple-surface');
-      if (!target) return;
+      if (!target || target.disabled || target.hasAttribute('disabled')) return;
 
       const rect = target.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const x = (typeof e.clientX === 'number' ? e.clientX : rect.left + rect.width / 2) - rect.left;
+      const y = (typeof e.clientY === 'number' ? e.clientY : rect.top + rect.height / 2) - rect.top;
+      const maxRadius = Math.hypot(Math.max(x, rect.width - x), Math.max(y, rect.height - y));
+      const diameter = Math.max(24, Math.ceil(maxRadius * 2));
+      const left = Math.round(x - diameter / 2);
+      const top = Math.round(y - diameter / 2);
+
       const wave = document.createElement('span');
       wave.className = 'md-ripple-wave';
-      wave.style.width = `${size}px`;
-      wave.style.height = `${size}px`;
-      wave.style.left = `${e.clientX - rect.left - size / 2}px`;
-      wave.style.top = `${e.clientY - rect.top - size / 2}px`;
+      wave.style.width = `${diameter}px`;
+      wave.style.height = `${diameter}px`;
+      wave.style.left = `${left}px`;
+      wave.style.top = `${top}px`;
+
+      activeRippleState = {
+        selector: getRippleReplaySelector(target),
+        left,
+        top,
+        diameter,
+        startTime: performance.now()
+      };
 
       target.appendChild(wave);
       wave.addEventListener('animationend', () => {

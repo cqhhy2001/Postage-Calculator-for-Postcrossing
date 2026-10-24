@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-546E7A?style=flat-square)](https://opensource.org/licenses/MIT)
 
 > **Batch Postcard Postage Calculator & Stamp Combinator for Postcrossing Enthusiasts**  
-> Calculate multi-destination postcard rates (`Surface Mail`, `SAL`, `Air Mail`, and `Registered Mail`), parse batch Postcrossing IDs (`DE-1234567 US-8901234`), and generate optimal stamp combinations for **Hongkong Post (`HK$`, effective 13 April 2026)** and **China Post (`RMB ¥`)**. Built with zero dependencies in strict adherence to the **Google Material Design 1.0 (2014)** specification.
+> Calculate multi-destination postcard rates (`Surface Mail`, `SAL`, `Air Mail`, and `Registered Mail`), parse batch Postcrossing IDs (`DE-1234567 US-8901234`), and generate optimal stamp combinations for **Hongkong Post (`HK$`, effective 13 April 2026)** and **China Post (`RMB ¥`)**. Built with zero dependencies in strict adherence to the **Google Material Design** specification.
 
 🔗 **Live Application:** [https://qamoe.cyou/Postage-Calculator-for-Postcrossing/](https://qamoe.cyou/Postage-Calculator-for-Postcrossing/)
 
@@ -31,9 +31,10 @@
 - Switch shipping method (`Surface Mail`, `SAL`, `Air Mail`) and toggle **Registered Mail** individually per destination or in batch across all rows.
 - Automatic fallback and warning badges when a selected service is unavailable for a specific destination.
 
-### 4. Stamp Combinator & Old Stamp Top-Up Helper
-- **Hongkong Post (`HK$`)**: Recommends minimal-piece combinations using standard Definitive Stamps (`$1.40`, `$2.20`, `$2.80`, `$3.70`, `$4.00`, `$5.00`, `$5.50`, `$10.00`, etc.) and includes an interactive **Old Stamp Top-Up Calculator** (`$2.00` – `$5.50` legacy stamps vs. 2026 new rates).
-- **China Post (`RMB ¥`)**: Provides exact-match (`¥0.00` overpayment) combinations using standard regular stamps (`80 fen`, `1.20 yuan`, `2.00 yuan`, `3.00 yuan`, `4.20 yuan`, `5.00 yuan`) alongside popular `1.20 + 0.80 yuan` commemorative pairs.
+### 4. Inline Live Stamp Preparation List & Old Stamp Top-Up Helper
+- **Always-Visible Stamp Shopping / Pulling List**: Displays the exact number of stamps needed by denomination right inside the main Summary Card alongside per-card affixing formulas—no popup required.
+- **Hongkong Post (`HK$`)**: Toggle inline between **2026 Definitive 1-Stamp** mode (`$2.4`, `$3.0`, `$3.7`, `$3.9`, `$4.2`, `$5.3`, `$5.6`, `$5.7`, `$5.8`) and **Common Multi-Stamp Combo** (`$5.0`, `$3.7`, `$3.0`, `$2.0` + make-up stamps), plus an interactive **Old Stamp Top-Up Calculator** (`$2.0` – `$5.5` legacy stamps vs. 2026 new rates).
+- **China Post (`RMB ¥`)**: Toggle inline between **Exact Match (`¥0.00` overpayment)** combinations (`80 fen`, `1.20 yuan`, `1.50 yuan`, `3.00 yuan`, `4.20 yuan`) and popular **`1.20 + 0.80 yuan` commemorative pairs**.
 
 ### 5. Cross-Operator Rate Comparison Bar
 - Real-time total comparison inside the Summary Card between **Hongkong Post (`HK$`)** and **China Post (`RMB ¥`)** for your exact destination list, complete with one-tap operator switching.
@@ -47,8 +48,8 @@
 - **China Post Destination Annotation**: Displays the required Chinese destination name annotation for outbound international postcards from Mainland China.
 - **Registered Mail Counter Notice**: Reminds senders about the `R`-series barcode label space and counter posting requirement whenever Registration is enabled.
 
-### 8. Authentic Material Design 1.0 UI & PWA Support
-- Authentic **Material Design 1.0** elevation shadows (`2dp`–`24dp`), radial ink ripples, cubic-bezier `(0.4, 0.0, 0.2, 1)` motion choreography, and responsive mobile bottom-sheet dialogs.
+### 8. Authentic Material Design UI & PWA Support
+- Authentic **Material Design** elevation shadows (`2dp`–`24dp`), radial ink ripples, cubic-bezier `(0.4, 0.0, 0.2, 1)` motion choreography, and responsive mobile dialogs.
 - **16 Curated Color Palettes** with **Light / Dark / Follow System** appearance modes.
 - **3 Interface Languages**: Traditional Chinese (`繁體中文`), Simplified Chinese (`简体中文`), and English (`English`).
 - **Offline PWA Support**: Service Worker caching and dynamic theme-tinted SVG favicon.
@@ -57,27 +58,27 @@
 
 ## Tariff Summary
 
-### Hongkong Post — Postcards (Effective 13 April 2026)
+### Hongkong Post — Postcards / Small Letters P ≤ 20g (Effective 13 April 2026)
 
 | Zone / Destination | Surface Mail | Air Mail | Registration Fee |
 | :--- | :---: | :---: | :---: |
-| **Local (Hong Kong)** | `HK$ 2.80` | — | `+ HK$ 15.50` |
-| **Chinese Mainland, Macao & Taiwan** | `HK$ 3.50` | `HK$ 4.50` | `+ HK$ 15.50` |
-| **Zone 1 (Asia & neighbouring regions)** | `HK$ 4.20` | `HK$ 5.00` | `+ HK$ 15.50` |
-| **Zone 2 (Europe, Americas, Australia, etc.)**| `HK$ 5.00` | `HK$ 5.50` | `+ HK$ 15.50` |
-| **Zone 3 (Sub-Saharan Africa, Latin America, etc.)** | `HK$ 5.00` | `HK$ 6.00` | `+ HK$ 15.50` |
+| **Local (Hong Kong)** | `HK$ 2.40` | — | `+ HK$ 15.50` |
+| **Chinese Mainland, Macao & Taiwan** | `HK$ 3.00` | `HK$ 3.90` | `+ HK$ 15.50` |
+| **Zone 1 (Asia & neighbouring regions)** | `HK$ 3.70` | `HK$ 4.20` | `+ HK$ 15.50` |
+| **Zone 2 (Japan, Europe, N. America, Australia, etc.)**| `HK$ 5.30` | `HK$ 5.70` | `+ HK$ 15.50` |
+| **Zone 3 (E. Europe, Nordic, Latin America, Africa, etc.)** | `HK$ 5.60` | `HK$ 5.80` | `+ HK$ 15.50` |
 
 *Official References:*
-- [Hongkong Post — Postage Rates Leaflet (Effective 13 April 2026, PDF)](https://www.hongkongpost.hk/filemanager/common/postage_rate_2026/pos15_s_2604_chi.pdf)
-- [Hongkong Post — Postal Guide Appendix: Overseas Zoning Table (PDF)](https://www.hongkongpost.hk/filemanager/common/guide/declare/appendix/appendices_c.pdf)
+- [Hongkong Post — Postage Rates & Calculator](https://www.hongkongpost.hk/tc/postage_calculator/index.html)
+- [Hongkong Post — Overseas Postal Zoning Table](https://www.hongkongpost.hk/tc/preparation/posting/zoning/index.html)
 
 ### China Post — Postcards (Current Official Tariff)
 
 | Zone / Destination | Surface Mail | SAL | Air Mail | Registration Fee |
 | :--- | :---: | :---: | :---: | :---: |
 | **Domestic (Chinese Mainland)** | `¥ 0.80` | — | — | `+ ¥ 3.00` |
-| **Hong Kong, Macao & Taiwan** | `¥ 1.50` | — | `¥ 3.50` | `+ ¥ 16.00` |
-| **International (All Overseas Countries)** | `¥ 3.00` | `¥ 4.50` | `¥ 5.00` | `+ ¥ 16.00` |
+| **Hong Kong, Macao & Taiwan** | `¥ 3.50` | — | `¥ 4.00` | `+ ¥ 16.00` |
+| **International (All Overseas Countries)** | `¥ 3.50` | `¥ 4.50` | `¥ 5.00` | `+ ¥ 16.00` |
 
 *Official Reference:*
 - [China Post — Official Domestic & International Letter-Post Tariff Schedule](https://www.chinapost.com.cn/html1/folder/181312/8251-1.htm)
@@ -88,8 +89,8 @@
 
 ```text
 .
-├── index.html      # App shell, SEO/OpenGraph metadata, dialogs, and Material Design 1 layout
-├── styles.css      # Material Design 1 elevation, typography, ripple, dark mode, and mobile rules
+├── index.html      # App shell, SEO/OpenGraph metadata, dialogs, and Material Design layout
+├── styles.css      # Material Design elevation, typography, ripple, dark mode, and mobile rules
 ├── data.js         # 240+ destinations dataset, tariff tables, stamp denominations, and i18n strings
 ├── app.js          # Calculator engine, Postcrossing ID parser, stamp combinator, undo stack, and URL state
 ├── manifest.json   # Progressive Web App (PWA) manifest

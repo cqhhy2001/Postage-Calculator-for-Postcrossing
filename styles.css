@@ -553,6 +553,210 @@ body {
   color: var(--md-text-secondary);
 }
 
+/* ==========================================================================
+   Inline Stamp Preparation & Denomination Breakdown Panel (Inside Summary Card)
+   ========================================================================== */
+.md-inline-stamp-panel {
+  border-top: 1px solid var(--md-divider);
+  padding: 14px 24px;
+  background-color: var(--md-bg-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: background-color 0.3s var(--md-curve-standard);
+}
+
+.md-inline-stamp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.md-inline-stamp-title-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.md-inline-stamp-icon {
+  font-size: 18px;
+  color: var(--md-primary-text);
+}
+
+.md-inline-stamp-title {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--md-text-primary);
+}
+
+.md-stamp-total-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 12px;
+  background-color: var(--md-primary-500);
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: var(--md-shadow-1dp);
+}
+
+.md-stamp-overpay-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background-color: var(--md-badge-bg);
+  color: var(--md-badge-text);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.md-inline-stamp-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.md-inline-strategy-switch {
+  display: inline-flex;
+  border: 1px solid var(--md-divider);
+  border-radius: 2px;
+  overflow: hidden;
+  background-color: var(--md-bg-subtle);
+}
+
+.md-strategy-btn {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  color: var(--md-text-secondary);
+  font-family: var(--md-font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.18s var(--md-curve-standard), color 0.18s var(--md-curve-standard);
+}
+
+.md-strategy-btn + .md-strategy-btn {
+  border-left: 1px solid var(--md-divider);
+}
+
+.md-strategy-btn.is-active {
+  background-color: var(--md-primary-500);
+  color: #FFFFFF;
+}
+
+.md-inline-topup-btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--md-primary-500);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--md-primary-text);
+  font-family: var(--md-font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.15s var(--md-curve-standard);
+}
+
+.md-inline-topup-btn:hover {
+  background-color: var(--md-badge-bg);
+}
+
+.md-inline-stamp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.md-inline-stamp-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.md-inline-row-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--md-text-secondary);
+  flex-shrink: 0;
+}
+
+.md-stamp-tickets-wrap,
+.md-stamp-tiers-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.md-stamp-pull-ticket {
+  display: inline-flex;
+  align-items: center;
+  border: 1px dashed var(--md-primary-500);
+  border-left: 3px solid var(--md-primary-500);
+  border-radius: 2px;
+  background-color: var(--md-bg-subtle);
+  padding: 4px 10px;
+  gap: 6px;
+  box-shadow: var(--md-shadow-1dp);
+}
+
+.md-stamp-ticket-denom {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--md-text-primary);
+}
+
+.md-stamp-ticket-qty {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--md-primary-text);
+  background-color: var(--md-badge-bg);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.md-stamp-tier-chip {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  padding: 3px 9px;
+  border-radius: 2px;
+  border: 1px solid var(--md-divider);
+  background-color: var(--md-bg-subtle);
+  font-size: 12px;
+  color: var(--md-text-secondary);
+}
+
+.md-stamp-tier-head {
+  font-weight: 500;
+  color: var(--md-text-primary);
+}
+
+.md-stamp-tier-arrow {
+  color: var(--md-text-hint);
+}
+
+.md-stamp-tier-formula strong {
+  color: var(--md-primary-text);
+  font-weight: 500;
+}
+
 /* Instant All-Air / All-Surface / Registered Comparison Strip */
 .md-compare-bar {
   background-color: var(--md-bg-subtle);
@@ -2030,6 +2234,8 @@ body {
 }
 
 .stamp-old-chip {
+  position: relative;
+  overflow: hidden;
   border: 1px solid var(--md-divider);
   background-color: var(--md-bg-surface);
   color: var(--md-text-primary);
@@ -2039,7 +2245,14 @@ body {
   font-size: 12.5px;
   font-weight: 500;
   cursor: pointer;
-  transition: border-color 0.15s var(--md-curve-standard), background-color 0.15s var(--md-curve-standard);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: border-color 0.15s var(--md-curve-standard), background-color 0.15s var(--md-curve-standard), color 0.15s var(--md-curve-standard), box-shadow 0.15s var(--md-curve-standard);
+}
+
+.stamp-old-chip:hover {
+  background-color: var(--md-hover-overlay);
 }
 
 .stamp-old-chip.is-selected {
@@ -2048,6 +2261,118 @@ body {
   padding: 4px 9px;
   background-color: var(--md-badge-bg);
   color: var(--md-badge-text);
+  box-shadow: var(--md-shadow-1dp);
+}
+
+.stamp-old-chip-qty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background-color: var(--md-primary-500);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Multi-Select Old Stamp Tray Bar */
+.stamp-selected-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 8px 12px;
+  border-radius: 2px;
+  border: 1px solid var(--md-divider);
+  background-color: var(--md-bg-subtle);
+}
+
+.stamp-selected-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.stamp-selected-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--md-text-secondary);
+}
+
+.stamp-selected-empty {
+  font-size: 12px;
+  color: var(--md-text-hint);
+}
+
+.stamp-selected-pill {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--md-primary-500);
+  background-color: var(--md-bg-surface);
+  color: var(--md-primary-text);
+  font-family: var(--md-font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s var(--md-curve-standard);
+}
+
+.stamp-selected-pill:hover {
+  background-color: var(--md-badge-bg);
+}
+
+.stamp-selected-pill .material-icons {
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.stamp-selected-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.stamp-selected-total {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--md-primary-text);
+}
+
+.stamp-clear-btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--md-divider);
+  border-radius: 2px;
+  background-color: var(--md-bg-surface);
+  color: var(--md-text-secondary);
+  font-family: var(--md-font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 3px 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: color 0.15s var(--md-curve-standard), border-color 0.15s var(--md-curve-standard), background-color 0.15s var(--md-curve-standard);
+}
+
+.stamp-clear-btn:hover {
+  color: var(--md-danger-color);
+  border-color: var(--md-danger-color);
+  background-color: rgba(211, 47, 47, 0.08);
 }
 
 .stamp-topup-grid {
@@ -2099,19 +2424,34 @@ body {
 /* ==========================================================================
    MD1 Radial Ink Ripple & Theme/Color-Scheme Wave Transition Animations
    ========================================================================== */
+.md-ripple-surface {
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .md-ripple-wave {
   position: absolute;
   border-radius: 50%;
   background-color: currentColor;
-  opacity: 0.22;
+  opacity: 0.24;
   transform: scale(0);
   pointer-events: none;
-  animation: mdRippleAnim 0.55s var(--md-curve-decelerate) forwards;
+  will-change: transform, opacity;
+  animation: mdRippleAnim 0.52s var(--md-curve-decelerate) forwards;
 }
 
 @keyframes mdRippleAnim {
-  to {
-    transform: scale(2.8);
+  0% {
+    transform: scale(0);
+    opacity: 0.24;
+  }
+  55% {
+    transform: scale(0.88);
+    opacity: 0.18;
+  }
+  100% {
+    transform: scale(1.02);
     opacity: 0;
   }
 }
@@ -2447,12 +2787,25 @@ html.is-theme-transitioning::view-transition-new(root) {
   }
 
   .md-breakdown-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
   }
 
   .md-breakdown-item {
-    padding: 8px 10px;
+    padding: 8px 8px;
+    min-width: 0;
+  }
+
+  .md-breakdown-header {
+    font-size: 11px;
+    line-height: 1.25;
+    gap: 4px;
+    align-items: flex-start;
+  }
+
+  .md-breakdown-header .material-icons {
+    font-size: 14px;
+    flex-shrink: 0;
   }
 
   .md-breakdown-amount {
@@ -2462,6 +2815,66 @@ html.is-theme-transitioning::view-transition-new(root) {
 
   .md-breakdown-count {
     font-size: 11px;
+    line-height: 1.25;
+  }
+
+  /* Inline Stamp Panel on Mobile */
+  .md-inline-stamp-panel {
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  .md-inline-stamp-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .md-inline-stamp-controls {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .md-inline-strategy-switch {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md-strategy-btn {
+    width: 100%;
+    padding: 6px 6px;
+    font-size: 11.5px;
+    line-height: 1.25;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .md-inline-topup-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 6px 10px;
+  }
+
+  .md-inline-stamp-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .md-stamp-pull-ticket {
+    padding: 4px 8px;
+    gap: 5px;
+  }
+
+  .md-stamp-ticket-denom {
+    font-size: 12.5px;
+  }
+
+  .md-stamp-ticket-qty {
+    font-size: 12px;
   }
 
   .md-compare-bar {
@@ -2471,13 +2884,16 @@ html.is-theme-transitioning::view-transition-new(root) {
 
   .md-compare-items {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
-    gap: 4px 12px;
+    gap: 4px 10px;
   }
 
   .md-compare-badge {
-    font-size: 12px;
+    font-size: 11.5px;
+    line-height: 1.3;
+    flex-wrap: wrap;
+    gap: 2px 4px;
   }
 
   .md-cross-compare-bar {
@@ -2510,15 +2926,33 @@ html.is-theme-transitioning::view-transition-new(root) {
   }
 
   .md-options-group {
-    justify-content: space-between;
-    gap: 8px;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
     padding-top: 2px;
   }
 
+  .md-segmented-field {
+    width: 100%;
+  }
+
+  .md-segmented-control {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
   .md-segment-btn {
-    height: 32px;
-    padding: 4px 10px;
+    width: 100%;
+    min-height: 34px;
+    height: auto;
+    padding: 5px 8px;
     font-size: 12px;
+    line-height: 1.25;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;
   }
 
   .md-chips-toggle-btn {
@@ -2554,24 +2988,28 @@ html.is-theme-transitioning::view-transition-new(root) {
 
   .md-table-actions {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 6px;
   }
 
   .md-table-actions .md-btn {
-    height: 32px;
-    padding: 0 6px;
-    font-size: 11.5px;
+    flex: 1 1 auto;
+    width: auto;
+    min-height: 34px;
+    height: auto;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.25;
     min-width: 0;
-    width: 100%;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: clip;
+    justify-content: center;
   }
 
   .md-table-actions .md-btn .material-icons {
-    font-size: 14px;
+    font-size: 15px;
     flex-shrink: 0;
   }
 
